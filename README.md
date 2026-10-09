@@ -14,18 +14,6 @@ Plain HTML, CSS, and JavaScript. No build step, no dependencies. The only outsid
 | `main.js` | Draws the map and sprites, handles clicks, menu, and popups |
 | `LOG.md` | Plans and changes log (required by the course) |
 
-## When you finish an artifact
-
-1. Open `cards.js`.
-2. In that artifact's entry, set `status: "shipped"`, fill in `title`, `link`, and `reflection`.
-3. Commit and push. The pin turns green and the ticker updates by itself.
-
-## Run it locally
-
-Open `index.html` in a browser, or run `python3 -m http.server` in this folder and visit `http://localhost:8000`.
-
-## Deploy on GitHub Pages
-
 1. Create a new public repository on GitHub, for example `project-world`.
 2. Upload all of these files to the repository root (keep `index.html` at the top level).
 3. In the repository go to **Settings, then Pages**.
