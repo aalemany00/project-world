@@ -44,8 +44,13 @@
   // ---------- draw the map ----------
   function drawMap() {
     var canvas = document.getElementById("map");
+    var box = canvas.parentElement.getBoundingClientRect();
+    var scale = Math.max(3, Math.round(box.height / 110));   // screen pixels per map pixel
+    canvas.width = Math.max(40, Math.ceil(box.width / scale));
+    canvas.height = Math.max(40, Math.ceil(box.height / scale));
     var ctx = canvas.getContext("2d");
     var W = canvas.width, H = canvas.height;
+    var rScale = Math.min(H / 108, W / 130);               // keep islands from overlapping on narrow screens
     var rand = rng(20261008);
 
     // sea with dithered depth bands
@@ -70,7 +75,7 @@
       var t = THEMES[card.theme] || THEMES.hub;
       var cx = Math.round(card.x / 100 * W);
       var cy = Math.round(card.y / 100 * H);
-      var r = card.id === 1 ? 17 : 13;
+      var r = Math.max(5, Math.round((card.id === 1 ? 17 : 13) * rScale));
       var ph1 = i * 1.7 + 0.5, ph2 = i * 2.3 + 1.1;
 
       for (var py = cy - r - 6; py <= cy + r + 6; py++) {
@@ -161,48 +166,187 @@
     }
   }
 
-  // ---------- guide sprite: a pixel version of Adrian ----------
-  //  h/H hair, s/S skin, g glasses frame, e eyes, m mustache + goatee,
-  //  w teeth, t shirt, b backpack strap, p jeans, k shoes, o outline
-  function drawHero() {
-    var canvas = document.getElementById("heroCanvas");
+  // ---------- guide sprite: an anime-style pixel Adrian ----------
+  //  20 x 30 pixels. The eyes are painted separately so he can blink and look around.
+  //  h/H hair, s/S skin, g glasses, e pupil, i iris, m/M mouth, t/T shirt, p jeans, k shoes
+  var HERO_W = 20, HERO_H = 32;
+
+  function dots(n) { return new Array(n + 1).join("."); }
+  function mid(inner) {                       // centre a row on the 20-pixel grid
+    var n = (HERO_W - inner.length) / 2;
+    return dots(n) + inner + dots(n);
+  }
+  function bodyRow(arm1, torso, arm2) { return "....o" + arm1 + "o" + torso + "o" + arm2 + "o...."; }
+
+  var HERO_ROWS = [
+    "..........o.........",
+    ".........ohho.......",
+    "......o..ohhoo.o....",
+    ".....ohho.ohhhoohho.",
+    "....ohhhohhhhhhhohho",
+    "..o.ohHhhhhhhHhhhhho",
+    ".ohoohhhhhhhhhhhhhho",
+    "..ohhhhhhhhhhhhho...",
+    mid("o" + "hhhssshhsshh" + "o"),
+    mid("o" + "hssssssssssh" + "o"),
+    mid("o" + "gggggssggggg" + "o"),
+    mid("o" + "gsssggggsssg" + "o"),
+    mid("o" + "gsssgssgsssg" + "o"),
+    mid("o" + "gsssgssgsssg" + "o"),
+    mid("o" + "gggggssggggg" + "o"),
+    mid("o" + "sssssSSsssss" + "o"),
+    mid("o" + "ssssmMMmssss" + "o"),
+    mid("o" + "sssssmmsssss" + "o"),
+    mid("o" + "ssssssssss" + "o"),
+    mid("o" + "ssssssss" + "o"),
+    mid("o" + "ss" + "o"),
+    mid("o" + "ttttsstttt" + "o"),
+    bodyRow("t", "ttTttt", "t"),
+    bodyRow("t", "tttttt", "t"),
+    bodyRow("s", "tttttt", "s"),
+    bodyRow("s", "tttttt", "s"),
+    bodyRow("s", "tttttt", "s"),
+    mid("o" + "pppppp" + "o"),
+    mid("o" + "ppoopp" + "o"),
+    mid("o" + "ppoopp" + "o"),
+    mid("o" + "ppoopp" + "o"),
+    mid("o" + "kkkk" + "oo" + "kkkk" + "o")
+  ];
+
+  var HERO_COLORS = {
+    o: "#120d1c", h: "#2b2338", H: "#4a3d63",
+    s: "#f7d0b6", S: "#e0a98c", g: "#7a4f2e", e: "#1a0f0a", i: "#7b2a3a",
+    m: "#b5584f", M: "#6e2430", t: "#3a3d52", T: "#565b78",
+    p: "#2f4a85", k: "#b8bdd0", w: "#ffffff"
+  };
+
+  var heroState = { blink: false, look: 0 };
+  var heroCanvases = [];
+
+  function paintEyes(ctx, x0) {                // each lens is 3 x 3 pixels, rows 11-13
+    if (heroState.blink) {
+      ctx.fillStyle = HERO_COLORS.s; ctx.fillRect(x0, 11, 3, 3);
+      ctx.fillStyle = HERO_COLORS.e; ctx.fillRect(x0, 12, 3, 1);
+      return;
+    }
+    ctx.fillStyle = HERO_COLORS.w; ctx.fillRect(x0, 11, 3, 3);
+    var ix = x0 + 1 + heroState.look;
+    ctx.fillStyle = HERO_COLORS.i; ctx.fillRect(ix, 11, 1, 3);
+    ctx.fillStyle = HERO_COLORS.e; ctx.fillRect(ix, 12, 1, 1);
+  }
+
+  function paintHero(canvas) {
     var ctx = canvas.getContext("2d");
-    var rows = [
-      "....oooooooo....",
-      "...ohhHhhhhho...",
-      "..ohhhhhhhhhho..",
-      "..ohhHhhhhhhho..",
-      "...ohhsssshho...",
-      "...ohssssssho...",
-      "...oggggggggo...",
-      "...ogseggesgo...",
-      "...ogggssgggo...",
-      "...osssSSssso...",
-      "...osmmmmmmso...",
-      "...osmwwwwmso...",
-      "...ossmmmmsso...",
-      "....osmmmmso....",
-      ".ottttsssstttto.",
-      ".otbtttsstttbto.",
-      ".otbttttttttbto.",
-      ".otbttttttttbto.",
-      "..ottttttttttto.".slice(0, 16),
-      "...oppppppppo...",
-      "...opppooppppo..".slice(0, 16),
-      "...okkkookkko..."
-    ];
-    var map = {
-      o: "#0a0f26", h: "#3b2619", H: "#5b3a26",
-      s: "#e2a57a", S: "#c98a62", g: "#6b4a2f", e: "#1a0f0a",
-      m: "#2c1b12", w: "#ffffff", t: "#222638", b: "#454c70",
-      p: "#2f4a85", k: "#aab0c8"
-    };
-    rows.forEach(function (row, y) {
-      for (var x = 0; x < 16; x++) {
-        var ch = row[x];
-        if (ch && ch !== ".") { ctx.fillStyle = map[ch]; ctx.fillRect(x, y, 1, 1); }
+    ctx.clearRect(0, 0, HERO_W, HERO_H);
+    HERO_ROWS.forEach(function (row, y) {
+      for (var x = 0; x < HERO_W; x++) {
+        var ch = row.charAt(x);
+        if (ch && ch !== "." && HERO_COLORS[ch]) {
+          ctx.fillStyle = HERO_COLORS[ch];
+          ctx.fillRect(x, y, 1, 1);
+        }
       }
     });
+    paintEyes(ctx, 5);
+    paintEyes(ctx, 12);
+  }
+
+  function setHero(change) {
+    for (var k in change) heroState[k] = change[k];
+    heroCanvases.forEach(paintHero);
+  }
+
+  var REDUCED = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+
+  function startHeroAnimation() {
+    if (REDUCED) return;
+    (function blinkLoop() {
+      setTimeout(function () {
+        setHero({ blink: true });
+        setTimeout(function () { setHero({ blink: false }); blinkLoop(); }, 130);
+      }, 2200 + Math.random() * 2800);
+    })();
+    (function lookLoop() {
+      setTimeout(function () {
+        setHero({ look: Math.random() < 0.5 ? -1 : 1 });
+        setTimeout(function () { setHero({ look: 0 }); lookLoop(); }, 900 + Math.random() * 700);
+      }, 3000 + Math.random() * 3500);
+    })();
+  }
+
+  function initHero() {
+    heroCanvases = [byId("heroCanvas"), byId("bootHero")];
+    heroCanvases.forEach(paintHero);
+    startHeroAnimation();
+  }
+
+  // ---------- boot-up intro ----------
+  var BOOT_LINES = [
+    "WELCOME TO PROJECT WORLD.",
+    "EVERY ISLAND IS A PROJECT I BUILT.",
+    "PRESS START TO BEGIN."
+  ];
+
+  function runBoot() {
+    var boot = byId("boot"), text = byId("bootText"), bar = byId("loadbar");
+    var start = byId("startBtn"), skip = byId("skipBtn");
+    var locked = [byId("pins"), byId("hero"), document.querySelector(".legend")];
+    locked.forEach(function (el) { if (el) el.inert = true; });
+
+    var BLOCKS = 8, lit = 0, typed = false, loaded = false, finished = false;
+    for (var i = 0; i < BLOCKS; i++) bar.appendChild(document.createElement("span"));
+
+    function ready() {
+      if (typed && loaded && !finished) {
+        start.hidden = false;
+        skip.hidden = true;
+        start.focus();
+      }
+    }
+
+    function begin() {
+      if (finished) return;
+      finished = true;
+      document.removeEventListener("keydown", onKey);
+      locked.forEach(function (el) { if (el) el.inert = false; });
+      boot.classList.add("done");
+      setTimeout(function () { boot.hidden = true; }, REDUCED ? 0 : 500);
+      setTimeout(speak, REDUCED ? 100 : 800);
+    }
+
+    function onKey(e) {
+      if ((e.key === "Enter" || e.key === " ") && !start.hidden) { e.preventDefault(); begin(); }
+    }
+
+    start.addEventListener("click", begin);
+    skip.addEventListener("click", begin);
+    document.addEventListener("keydown", onKey);
+
+    if (REDUCED) {
+      text.textContent = BOOT_LINES.join("\n");
+      Array.prototype.forEach.call(bar.children, function (b) { b.className = "on"; });
+      typed = loaded = true;
+      ready();
+      return;
+    }
+
+    var lineIdx = 0, charIdx = 0;
+    function typeNext() {
+      if (finished) return;
+      if (lineIdx >= BOOT_LINES.length) { typed = true; ready(); return; }
+      var line = BOOT_LINES[lineIdx];
+      charIdx++;
+      text.textContent = BOOT_LINES.slice(0, lineIdx).concat(line.slice(0, charIdx)).join("\n");
+      if (charIdx >= line.length) { lineIdx++; charIdx = 0; setTimeout(typeNext, 380); }
+      else setTimeout(typeNext, 38);
+    }
+    setTimeout(typeNext, 900);
+
+    var timer = setInterval(function () {
+      if (finished) { clearInterval(timer); return; }
+      if (lit < BLOCKS) { bar.children[lit].className = "on"; lit++; }
+      if (lit >= BLOCKS) { clearInterval(timer); loaded = true; ready(); }
+    }, 420);
   }
 
   // ---------- panels (card, about, help, dev log) ----------
@@ -454,7 +598,7 @@
     if (SITE.title) byId("siteTitle").textContent = SITE.title;
 
     drawMap();
-    drawHero();
+    initHero();
     buildPins();
     buildDrawer();
     setDrawer(false);
@@ -478,7 +622,13 @@
     hero.addEventListener("keydown", function (e) {
       if (e.key === "Enter" || e.key === " ") { e.preventDefault(); speak(); }
     });
-    setTimeout(speak, 900);
+    runBoot();
+
+    var resizeTimer = null;
+    window.addEventListener("resize", function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(drawMap, 150);
+    });
 
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape") {

@@ -12,6 +12,22 @@
 window.DEVLOG = [
   {
     date: "2026-10-09",
+    title: "Round 3: handheld look, new character, intro",
+    items: [
+      "Changed the colors to an old handheld console: gray shell, dark screen bezel, maroon buttons, green screen text, and a teal background. No more purple or orange.",
+      "Made the game screen as wide and tall as the Spidey Tracker's, so it fills the page like theirs does.",
+      "Redrew the guide from a reference sprite I picked: skinny, spiky anime hair, big eyes, glasses, and no facial hair.",
+      "Gave the guide animation: he blinks and looks around.",
+      "Added a boot-up intro: the guide drops in, a welcome message types out, a loading bar fills, then PRESS START.",
+      "Still to do: sound effects (I will supply the audio), then the zoom-in worlds."
+    ],
+    misreads: [
+      "The AI copied my selfie too literally and gave the character a beard and a heavier build. I wanted a skinny anime-style character with spiky hair, like the sprite I showed it.",
+      "The AI picked purple and orange/gold colors I did not like. I asked for a gray handheld-console look instead."
+    ]
+  },
+  {
+    date: "2026-10-09",
     title: "Round 2: feedback after deploying",
     items: [
       "Moved the guide character to the bottom-left corner so his speech bubble stops covering the map.",

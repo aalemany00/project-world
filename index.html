@@ -34,8 +34,17 @@
       </div>
 
       <div class="hero" id="hero" role="button" tabindex="0" aria-label="Say hi to the guide">
-        <canvas id="heroCanvas" width="16" height="22" aria-hidden="true"></canvas>
+        <canvas id="heroCanvas" width="20" height="32" aria-hidden="true"></canvas>
         <div class="bubble" id="bubble" hidden></div>
+      </div>
+      <!-- boot-up intro -->
+      <div class="boot" id="boot">
+        <h2 class="boot-title">PROJECT WORLD</h2>
+        <canvas class="boot-hero" id="bootHero" width="20" height="32" aria-hidden="true"></canvas>
+        <p class="boot-text" id="bootText" aria-live="polite"></p>
+        <div class="loadbar" id="loadbar" aria-hidden="true"></div>
+        <button class="start-btn" id="startBtn" type="button" hidden>PRESS START</button>
+        <button class="skip-btn" id="skipBtn" type="button">SKIP</button>
       </div>
     </section>
 
