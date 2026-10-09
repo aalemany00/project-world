@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project World | Adrian Alemany</title>
+  <meta name="description" content="Adrian Alemany's portfolio: an interactive pixel map where every project is its own island.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main class="frame" id="frame">
+
+    <!-- top bar -->
+    <header class="topbar">
+      <button class="pix-btn menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
+        <span class="bars" aria-hidden="true"></span>
+      </button>
+      <h1 class="logo" id="siteTitle">PROJECT WORLD</h1>
+      <button class="pix-btn about-btn" id="aboutBtn" aria-label="About me">?</button>
+    </header>
+
+    <!-- the map -->
+    <section class="mapwrap" aria-label="World map of projects">
+      <canvas id="map" width="192" height="108" aria-hidden="true"></canvas>
+      <div class="pins" id="pins"></div>
+
+      <div class="legend" aria-hidden="true">
+        <span class="badge green"></span><span class="lbl">SHIPPED</span>
+        <span class="badge red"></span><span class="lbl">IDEA</span>
+      </div>
+
+      <div class="hero" id="hero" role="button" tabindex="0" aria-label="Say hi to the guide">
+        <div class="bubble" id="bubble" hidden></div>
+        <canvas id="heroCanvas" width="12" height="14" aria-hidden="true"></canvas>
+      </div>
+    </section>
+
+    <!-- bottom ticker -->
+    <footer class="bottombar">
+      <div class="ticker" aria-live="off"><div class="ticker-track" id="ticker"></div></div>
+    </footer>
+  </main>
+
+  <p class="hint">Click a pin to visit a project. Press Esc to close.</p>
+
+  <!-- card popup -->
+  <div class="overlay" id="overlay" hidden>
+    <article class="card" id="card" role="dialog" aria-modal="true" aria-labelledby="cardTitle" tabindex="-1">
+      <button class="pix-btn close-btn" id="closeCard" aria-label="Close card">X</button>
+      <p class="card-kicker" id="cardKicker"></p>
+      <h2 id="cardTitle"></h2>
+      <p class="status" id="cardStatus"></p>
+      <p class="card-body" id="cardBody"></p>
+      <a class="visit" id="cardLink" href="#" target="_blank" rel="noopener">VISIT PROJECT</a>
+    </article>
+  </div>
+
+  <!-- slide-out menu -->
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <nav>
+      <h2 class="drawer-title">MENU</h2>
+      <ul id="drawerList"></ul>
+    </nav>
+  </aside>
+
+  <!-- about panel -->
+  <div class="overlay" id="aboutOverlay" hidden>
+    <article class="card about" id="aboutCard" role="dialog" aria-modal="true" aria-labelledby="aboutTitle" tabindex="-1">
+      <button class="pix-btn close-btn" id="closeAbout" aria-label="Close about">X</button>
+      <p class="card-kicker">PLAYER ONE</p>
+      <h2 id="aboutTitle"></h2>
+      <p class="status" id="aboutTag"></p>
+      <div class="card-body" id="aboutBody"></div>
+      <div class="linkrow" id="aboutLinks"></div>
+    </article>
+  </div>
+
+  <script src="cards.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
