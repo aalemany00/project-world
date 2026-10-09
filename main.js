@@ -1,13 +1,24 @@
 /* ============ PROJECT WORLD - main.js ============
-   Layer 1: pixel map, pins, card popups, menu, ticker.
-   Everything is drawn in code, so there are no image files to manage.
-   Card content lives in cards.js.
+   Layer 1: pixel map, pins, card popups, menu, ticker,
+   how-to panel, About panel, and dev log.
+   Everything is drawn in code, so there are no image files.
+   Card content lives in cards.js. Dev log lives in devlog.js.
 =================================================== */
 (function () {
   "use strict";
 
   var CARDS = window.CARDS || [];
   var SITE = window.SITE || {};
+  var DEVLOG = window.DEVLOG || [];
+
+  var HELP = [
+    "Click any pin on the map to open that project's card.",
+    "Green pins are projects I have shipped. Red pins are ideas I have not built yet.",
+    "The menu (top left) has About Me, the Quest Log to jump to any artifact, and the Dev Log.",
+    "Click the little guide in the bottom-left corner for tips.",
+    "On a keyboard: Tab moves between pins, Enter opens one, Esc closes anything.",
+    "Coming soon: each pin will zoom into its own themed world."
+  ];
 
   // ---------- tiny seeded random so the map looks the same every load ----------
   function rng(seed) {
@@ -140,56 +151,183 @@
         if (ch !== ".") { ctx.fillStyle = map[ch]; ctx.fillRect(x, y, 1, 1); }
       }
     });
-    // icon
     ctx.fillStyle = "#fff";
     if (shipped) {
-      // star
       [[5,3],[6,3],[4,4],[5,4],[6,4],[7,4],[3,5],[4,5],[5,5],[6,5],[7,5],[8,5],[4,6],[5,6],[6,6],[7,6],[4,7],[5,7],[6,7],[7,7],[3,8],[4,8],[7,8],[8,8]]
         .forEach(function (p) { ctx.fillRect(p[0], p[1], 1, 1); });
     } else {
-      // question mark
       [[4,3],[5,3],[6,3],[7,3],[7,4],[7,5],[6,6],[5,6],[5,7],[5,9]]
         .forEach(function (p) { ctx.fillRect(p[0], p[1], 1, 1); });
     }
   }
 
-  // ---------- hero sprite (original character: explorer in an orange cap) ----------
+  // ---------- guide sprite: a pixel version of Adrian ----------
+  //  h/H hair, s/S skin, g glasses frame, e eyes, m mustache + goatee,
+  //  w teeth, t shirt, b backpack strap, p jeans, k shoes, o outline
   function drawHero() {
     var canvas = document.getElementById("heroCanvas");
     var ctx = canvas.getContext("2d");
     var rows = [
-      "...oooooo...",
-      "..oOOOOOOo..",
-      ".oOOOOOOOOo.",
-      ".ooooooooooo",
-      "..osssssso..",
-      "..osksskso..",
-      "..osssssso..",
-      "...osmmso...",
-      "..obbbbbbo..",
-      ".obbbbbbbbo.",
-      ".osbbbbbbso.",
-      "..obbbbbbo..",
-      "..opp..ppo..",
-      "..ooo..ooo.."
+      "....oooooooo....",
+      "...ohhHhhhhho...",
+      "..ohhhhhhhhhho..",
+      "..ohhHhhhhhhho..",
+      "...ohhsssshho...",
+      "...ohssssssho...",
+      "...oggggggggo...",
+      "...ogseggesgo...",
+      "...ogggssgggo...",
+      "...osssSSssso...",
+      "...osmmmmmmso...",
+      "...osmwwwwmso...",
+      "...ossmmmmsso...",
+      "....osmmmmso....",
+      ".ottttsssstttto.",
+      ".otbtttsstttbto.",
+      ".otbttttttttbto.",
+      ".otbttttttttbto.",
+      "..ottttttttttto.".slice(0, 16),
+      "...oppppppppo...",
+      "...opppooppppo..".slice(0, 16),
+      "...okkkookkko..."
     ];
     var map = {
-      o: "#0a0f26", O: "#f08a24", s: "#f2c79b", k: "#0a0f26",
-      m: "#c76b5a", b: "#2c6fb3", p: "#3b3f78"
+      o: "#0a0f26", h: "#3b2619", H: "#5b3a26",
+      s: "#e2a57a", S: "#c98a62", g: "#6b4a2f", e: "#1a0f0a",
+      m: "#2c1b12", w: "#ffffff", t: "#222638", b: "#454c70",
+      p: "#2f4a85", k: "#aab0c8"
     };
     rows.forEach(function (row, y) {
-      for (var x = 0; x < 12; x++) {
+      for (var x = 0; x < 16; x++) {
         var ch = row[x];
-        if (ch !== ".") { ctx.fillStyle = map[ch]; ctx.fillRect(x, y, 1, 1); }
+        if (ch && ch !== ".") { ctx.fillStyle = map[ch]; ctx.fillRect(x, y, 1, 1); }
       }
     });
   }
 
-  // ---------- pins ----------
+  // ---------- panels (card, about, help, dev log) ----------
   var lastFocus = null;
+  var openPanel = null;
 
+  function showPanel(overlayEl, cardEl, opener) {
+    lastFocus = opener || document.activeElement;
+    openPanel = { overlay: overlayEl, card: cardEl };
+    overlayEl.hidden = false;
+    cardEl.focus();
+  }
+
+  function hidePanel() {
+    if (!openPanel) return;
+    openPanel.overlay.hidden = true;
+    openPanel = null;
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  function byId(id) { return document.getElementById(id); }
+
+  function openCard(data, opener) {
+    byId("cardKicker").textContent = data.name.toUpperCase();
+    byId("cardTitle").textContent = data.title;
+
+    var st = byId("cardStatus");
+    var shipped = data.status === "shipped";
+    st.textContent = shipped ? "SHIPPED" : "IDEA - NOT BUILT YET";
+    st.className = "status " + (shipped ? "shipped" : "rumored");
+
+    byId("cardBody").textContent = shipped
+      ? (data.reflection || "Reflection coming soon.")
+      : (data.idea || "Idea coming soon.");
+
+    var link = byId("cardLink");
+    if (shipped && data.link) {
+      link.hidden = false;
+      link.href = data.link;
+      link.target = data.link === "./" ? "_self" : "_blank";
+    } else {
+      link.hidden = true;
+    }
+    showPanel(byId("overlay"), byId("card"), opener);
+  }
+
+  function openAbout(opener) {
+    byId("aboutTitle").textContent = SITE.name || "About";
+    var tag = byId("aboutTag");
+    tag.textContent = SITE.tagline || "";
+    tag.className = "status plain";
+
+    var body = byId("aboutBody");
+    body.textContent = "";
+    (SITE.about || []).forEach(function (t) {
+      var p = document.createElement("p");
+      p.textContent = t;
+      body.appendChild(p);
+    });
+
+    var row = byId("aboutLinks");
+    row.textContent = "";
+    (SITE.links || []).forEach(function (l) {
+      var a = document.createElement("a");
+      a.href = l.url; a.target = "_blank"; a.rel = "noopener";
+      a.textContent = l.label;
+      row.appendChild(a);
+    });
+    showPanel(byId("aboutOverlay"), byId("aboutCard"), opener);
+  }
+
+  function openHelp(opener) {
+    var list = byId("helpBody");
+    list.textContent = "";
+    HELP.forEach(function (t) {
+      var li = document.createElement("li");
+      var span = document.createElement("span");
+      span.textContent = t;
+      li.appendChild(span);
+      list.appendChild(li);
+    });
+    showPanel(byId("helpOverlay"), byId("helpCard"), opener);
+  }
+
+  function openDevlog(opener) {
+    var body = byId("devlogBody");
+    body.textContent = "";
+    DEVLOG.forEach(function (entry) {
+      var wrap = document.createElement("section");
+      wrap.className = "log-entry";
+
+      var h = document.createElement("h3");
+      h.textContent = entry.date + " | " + entry.title;
+      wrap.appendChild(h);
+
+      var ul = document.createElement("ul");
+      (entry.items || []).forEach(function (t) {
+        var li = document.createElement("li");
+        li.textContent = t;
+        ul.appendChild(li);
+      });
+      wrap.appendChild(ul);
+
+      if (entry.misreads && entry.misreads.length) {
+        var sub = document.createElement("p");
+        sub.className = "log-sub";
+        sub.textContent = "WHERE THE AI MISREAD ME";
+        wrap.appendChild(sub);
+        var ul2 = document.createElement("ul");
+        entry.misreads.forEach(function (t) {
+          var li = document.createElement("li");
+          li.textContent = t;
+          ul2.appendChild(li);
+        });
+        wrap.appendChild(ul2);
+      }
+      body.appendChild(wrap);
+    });
+    if (!DEVLOG.length) body.textContent = "No entries yet.";
+    showPanel(byId("devlogOverlay"), byId("devlogCard"), opener);
+  }
+
+  // ---------- pins ----------
   function buildPins() {
-    var host = document.getElementById("pins");
+    var host = byId("pins");
     CARDS.forEach(function (card) {
       var btn = document.createElement("button");
       btn.className = "pin";
@@ -210,89 +348,33 @@
     });
   }
 
-  // ---------- card popup ----------
-  var overlay, card, aboutOverlay, aboutCard;
-
-  function openCard(data, opener) {
-    lastFocus = opener || document.activeElement;
-    document.getElementById("cardKicker").textContent = data.name.toUpperCase();
-    document.getElementById("cardTitle").textContent = data.title;
-
-    var st = document.getElementById("cardStatus");
-    var shipped = data.status === "shipped";
-    st.textContent = shipped ? "SHIPPED" : "IDEA - NOT BUILT YET";
-    st.className = "status " + (shipped ? "shipped" : "rumored");
-
-    var body = document.getElementById("cardBody");
-    body.textContent = shipped ? (data.reflection || "Reflection coming soon.") : (data.idea || "Idea coming soon.");
-
-    var link = document.getElementById("cardLink");
-    if (shipped && data.link) {
-      link.hidden = false;
-      link.href = data.link;
-      link.target = data.link === "./" ? "_self" : "_blank";
-    } else {
-      link.hidden = true;
-    }
-    overlay.hidden = false;
-    card.focus();
-  }
-
-  function closeCard() {
-    overlay.hidden = true;
-    if (lastFocus && lastFocus.focus) lastFocus.focus();
-  }
-
-  function openAbout(opener) {
-    lastFocus = opener || document.activeElement;
-    document.getElementById("aboutTitle").textContent = SITE.name || "About";
-    document.getElementById("aboutTag").textContent = SITE.tagline || "";
-    document.getElementById("aboutTag").className = "status plain";
-    var body = document.getElementById("aboutBody");
-    body.textContent = "";
-    (SITE.about || []).forEach(function (t) {
-      var p = document.createElement("p");
-      p.textContent = t;
-      body.appendChild(p);
-    });
-    var row = document.getElementById("aboutLinks");
-    row.textContent = "";
-    (SITE.links || []).forEach(function (l) {
-      var a = document.createElement("a");
-      a.href = l.url; a.target = "_blank"; a.rel = "noopener";
-      a.textContent = l.label;
-      row.appendChild(a);
-    });
-    aboutOverlay.hidden = false;
-    aboutCard.focus();
-  }
-
-  function closeAbout() {
-    aboutOverlay.hidden = true;
-    if (lastFocus && lastFocus.focus) lastFocus.focus();
-  }
-
-  // ---------- drawer menu ----------
+  // ---------- drawer menu (no external links: those live in About Me) ----------
   function buildDrawer() {
-    var list = document.getElementById("drawerList");
+    var list = byId("drawerList");
+    var menuBtn = byId("menuBtn");
 
-    function item(content) {
+    function item(el) {
       var li = document.createElement("li");
-      li.appendChild(content);
+      li.appendChild(el);
       list.appendChild(li);
     }
+    function group(text) {
+      var li = document.createElement("li");
+      li.className = "group";
+      li.textContent = text;
+      list.appendChild(li);
+    }
+    function button(label, onClick) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.textContent = label;
+      b.addEventListener("click", function () { setDrawer(false); onClick(menuBtn); });
+      return b;
+    }
 
-    var about = document.createElement("button");
-    about.type = "button";
-    about.textContent = "ABOUT ME";
-    about.addEventListener("click", function () { setDrawer(false); openAbout(about); });
-    item(about);
+    item(button("ABOUT ME", openAbout));
 
-    var head = document.createElement("li");
-    head.style.cssText = "padding:16px 4px 6px;font-size:8px;color:#8aa4d6;";
-    head.textContent = "QUEST LOG";
-    list.appendChild(head);
-
+    group("QUEST LOG");
     CARDS.forEach(function (c) {
       var b = document.createElement("button");
       b.type = "button";
@@ -300,26 +382,22 @@
       dot.className = "dot " + c.status;
       b.appendChild(dot);
       b.appendChild(document.createTextNode("ARTIFACT " + c.id));
-      b.addEventListener("click", function () { setDrawer(false); openCard(c, b); });
+      b.addEventListener("click", function () { setDrawer(false); openCard(c, menuBtn); });
       item(b);
     });
 
-    SITE.links && SITE.links.forEach(function (l) {
-      var a = document.createElement("a");
-      a.href = l.url; a.target = "_blank"; a.rel = "noopener";
-      a.textContent = l.label;
-      item(a);
-    });
+    group("THE SITE");
+    item(button("HOW TO USE", openHelp));
+    item(button("DEV LOG", openDevlog));
   }
 
   function setDrawer(open) {
-    var d = document.getElementById("drawer");
-    var b = document.getElementById("menuBtn");
+    var d = byId("drawer");
+    var b = byId("menuBtn");
     d.classList.toggle("open", open);
     d.setAttribute("aria-hidden", open ? "false" : "true");
     b.setAttribute("aria-expanded", open ? "true" : "false");
     b.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-    // keep hidden drawer links out of the tab order
     var els = d.querySelectorAll("button, a");
     for (var i = 0; i < els.length; i++) els[i].tabIndex = open ? 0 : -1;
   }
@@ -336,21 +414,21 @@
     CARDS.forEach(function (c) {
       if (c.status === "shipped") parts.push("ARTIFACT " + c.id + " SHIPPED: " + c.title.toUpperCase());
     });
-    document.getElementById("ticker").textContent = parts.join("   ▪   ");
+    byId("ticker").textContent = parts.join("   ▪   ");
   }
 
-  // ---------- hero chatter ----------
+  // ---------- guide chatter ----------
   var LINES = [
     "Welcome to Project World!",
     "Every pin is a project I built.",
     "Red pins are ideas. Green pins are shipped!",
     "More islands unlock as the quarter goes on.",
-    "Psst... try the menu in the corner."
+    "Open the menu to read the dev log."
   ];
   var lineIdx = 0, bubbleTimer = null;
 
   function speak() {
-    var b = document.getElementById("bubble");
+    var b = byId("bubble");
     b.textContent = LINES[lineIdx % LINES.length];
     lineIdx++;
     b.hidden = false;
@@ -358,7 +436,7 @@
     bubbleTimer = setTimeout(function () { b.hidden = true; }, 3200);
   }
 
-  // ---------- keyboard: Esc and focus trapping ----------
+  // ---------- keyboard: focus trap ----------
   function trapTab(e, container) {
     if (e.key !== "Tab") return;
     var f = container.querySelectorAll("a[href]:not([hidden]), button");
@@ -373,12 +451,7 @@
 
   // ---------- init ----------
   function init() {
-    overlay = document.getElementById("overlay");
-    card = document.getElementById("card");
-    aboutOverlay = document.getElementById("aboutOverlay");
-    aboutCard = document.getElementById("aboutCard");
-
-    if (SITE.title) document.getElementById("siteTitle").textContent = SITE.title;
+    if (SITE.title) byId("siteTitle").textContent = SITE.title;
 
     drawMap();
     drawHero();
@@ -387,29 +460,32 @@
     setDrawer(false);
     buildTicker();
 
-    document.getElementById("closeCard").addEventListener("click", closeCard);
-    document.getElementById("closeAbout").addEventListener("click", closeAbout);
-    overlay.addEventListener("click", function (e) { if (e.target === overlay) closeCard(); });
-    aboutOverlay.addEventListener("click", function (e) { if (e.target === aboutOverlay) closeAbout(); });
-
-    document.getElementById("menuBtn").addEventListener("click", function () {
-      setDrawer(!document.getElementById("drawer").classList.contains("open"));
+    ["closeCard", "closeAbout", "closeHelp", "closeDevlog"].forEach(function (id) {
+      byId(id).addEventListener("click", hidePanel);
     });
-    document.getElementById("aboutBtn").addEventListener("click", function (e) { openAbout(e.currentTarget); });
+    ["overlay", "aboutOverlay", "helpOverlay", "devlogOverlay"].forEach(function (id) {
+      var el = byId(id);
+      el.addEventListener("click", function (e) { if (e.target === el) hidePanel(); });
+    });
 
-    var hero = document.getElementById("hero");
+    byId("menuBtn").addEventListener("click", function () {
+      setDrawer(!byId("drawer").classList.contains("open"));
+    });
+    byId("helpBtn").addEventListener("click", function (e) { openHelp(e.currentTarget); });
+
+    var hero = byId("hero");
     hero.addEventListener("click", speak);
-    hero.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); speak(); } });
+    hero.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); speak(); }
+    });
     setTimeout(speak, 900);
 
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape") {
-        if (!overlay.hidden) closeCard();
-        else if (!aboutOverlay.hidden) closeAbout();
-        else if (document.getElementById("drawer").classList.contains("open")) setDrawer(false);
+        if (openPanel) hidePanel();
+        else if (byId("drawer").classList.contains("open")) setDrawer(false);
       }
-      if (!overlay.hidden) trapTab(e, card);
-      if (!aboutOverlay.hidden) trapTab(e, aboutCard);
+      if (openPanel) trapTab(e, openPanel.card);
     });
   }
 

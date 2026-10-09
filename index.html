@@ -20,7 +20,7 @@
         <span class="bars" aria-hidden="true"></span>
       </button>
       <h1 class="logo" id="siteTitle">PROJECT WORLD</h1>
-      <button class="pix-btn about-btn" id="aboutBtn" aria-label="About me">?</button>
+      <button class="pix-btn help-btn" id="helpBtn" aria-label="How to use this site">?</button>
     </header>
 
     <!-- the map -->
@@ -34,8 +34,8 @@
       </div>
 
       <div class="hero" id="hero" role="button" tabindex="0" aria-label="Say hi to the guide">
+        <canvas id="heroCanvas" width="16" height="22" aria-hidden="true"></canvas>
         <div class="bubble" id="bubble" hidden></div>
-        <canvas id="heroCanvas" width="12" height="14" aria-hidden="true"></canvas>
       </div>
     </section>
 
@@ -45,9 +45,9 @@
     </footer>
   </main>
 
-  <p class="hint">Click a pin to visit a project. Press Esc to close.</p>
+  <p class="hint">Click a pin to visit a project. Lost? Tap the ? button. Press Esc to close anything.</p>
 
-  <!-- card popup -->
+  <!-- project card popup -->
   <div class="overlay" id="overlay" hidden>
     <article class="card" id="card" role="dialog" aria-modal="true" aria-labelledby="cardTitle" tabindex="-1">
       <button class="pix-btn close-btn" id="closeCard" aria-label="Close card">X</button>
@@ -58,14 +58,6 @@
       <a class="visit" id="cardLink" href="#" target="_blank" rel="noopener">VISIT PROJECT</a>
     </article>
   </div>
-
-  <!-- slide-out menu -->
-  <aside class="drawer" id="drawer" aria-hidden="true">
-    <nav>
-      <h2 class="drawer-title">MENU</h2>
-      <ul id="drawerList"></ul>
-    </nav>
-  </aside>
 
   <!-- about panel -->
   <div class="overlay" id="aboutOverlay" hidden>
@@ -79,7 +71,36 @@
     </article>
   </div>
 
+  <!-- how-to-use panel -->
+  <div class="overlay" id="helpOverlay" hidden>
+    <article class="card" id="helpCard" role="dialog" aria-modal="true" aria-labelledby="helpTitle" tabindex="-1">
+      <button class="pix-btn close-btn" id="closeHelp" aria-label="Close help">X</button>
+      <p class="card-kicker">TUTORIAL</p>
+      <h2 id="helpTitle">HOW TO USE THIS SITE</h2>
+      <ol class="howto" id="helpBody"></ol>
+    </article>
+  </div>
+
+  <!-- dev log panel -->
+  <div class="overlay" id="devlogOverlay" hidden>
+    <article class="card" id="devlogCard" role="dialog" aria-modal="true" aria-labelledby="devlogTitle" tabindex="-1">
+      <button class="pix-btn close-btn" id="closeDevlog" aria-label="Close dev log">X</button>
+      <p class="card-kicker">HOW THIS SITE GOT BUILT</p>
+      <h2 id="devlogTitle">DEV LOG</h2>
+      <div id="devlogBody"></div>
+    </article>
+  </div>
+
+  <!-- slide-out menu -->
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <nav>
+      <h2 class="drawer-title">MENU</h2>
+      <ul id="drawerList"></ul>
+    </nav>
+  </aside>
+
   <script src="cards.js"></script>
+  <script src="devlog.js"></script>
   <script src="main.js"></script>
 </body>
 </html>

@@ -1,19 +1,21 @@
 /* ============ PROJECT WORLD - styles ============ */
 :root {
-  --navy: #0b1233;
-  --navy2: #0f1b48;
-  --teal: #3a98bd;
-  --teal-dark: #1f6b8c;
-  --teal-light: #6fc3e0;
-  --orange: #f08a24;
-  --orange-dark: #b35a0c;
-  --yellow: #ffd45c;
-  --green: #3fbf6a;
-  --green-dark: #1d7a3f;
-  --red: #e0453f;
-  --red-dark: #8e1f1b;
   --ink: #0a0f26;
+  --water: #0b1233;
+
+  --wood: #8a5a34;
+  --wood-light: #b5783f;
+  --wood-dark: #4d2f19;
+  --wood-deep: #25140b;
+
+  --gold: #f2c14e;
+  --gold-dark: #b8862a;
+  --gold-light: #ffe39a;
+
   --paper: #f5f1e4;
+  --green: #3fbf6a;
+  --red: #e0453f;
+
   --pix: 4px;
   --font: "Press Start 2P", "Courier New", monospace;
 }
@@ -25,22 +27,24 @@ html, body { margin: 0; min-height: 100%; }
 body {
   font-family: var(--font);
   color: #fff;
-  background: linear-gradient(#1747b0 0%, #1747b0 18%, #0c1c5c 60%, #070d2b 100%);
+  background: linear-gradient(#4a2563 0%, #2a1240 35%, #150a28 70%, #0a0514 100%);
   background-attachment: fixed;
   image-rendering: pixelated;
   padding: 16px 16px 24px;
   min-height: 100vh;
 }
 
-/* ---------- frame ---------- */
+/* ---------- frame (carved wood) ---------- */
 .frame {
   max-width: 1100px;
   margin: 0 auto;
-  background: var(--teal);
+  background:
+    repeating-linear-gradient(90deg, rgba(0,0,0,.07) 0 6px, rgba(0,0,0,0) 6px 28px),
+    var(--wood);
   border: var(--pix) solid var(--ink);
   box-shadow:
-    inset 0 0 0 var(--pix) var(--teal-light),
-    inset 0 0 0 calc(var(--pix) * 2) var(--teal-dark),
+    inset 0 0 0 var(--pix) var(--wood-light),
+    inset 0 0 0 calc(var(--pix) * 2) var(--wood-dark),
     0 var(--pix) 0 var(--ink);
   padding: 22px;
   position: relative;
@@ -58,12 +62,12 @@ body {
   margin: 0;
   font-size: clamp(11px, 2.4vw, 22px);
   letter-spacing: 1px;
-  color: #bfe9ff;
-  background: #0b2a5e;
+  color: var(--gold-light);
+  background: var(--wood-deep);
   border: var(--pix) solid var(--ink);
-  box-shadow: inset 0 0 0 var(--pix) #2c6fb3;
+  box-shadow: inset 0 0 0 var(--pix) var(--wood-light);
   padding: 12px 18px;
-  text-shadow: 3px 3px 0 #061a3d;
+  text-shadow: 3px 3px 0 #000;
   text-align: center;
 }
 
@@ -71,19 +75,20 @@ body {
 .pix-btn {
   font-family: var(--font);
   width: 48px; height: 48px;
-  background: var(--orange);
+  background: var(--gold);
   color: var(--ink);
   border: var(--pix) solid var(--ink);
-  box-shadow: inset calc(var(--pix) * -1) calc(var(--pix) * -1) 0 var(--orange-dark),
-              inset var(--pix) var(--pix) 0 #ffb55e;
+  box-shadow: inset calc(var(--pix) * -1) calc(var(--pix) * -1) 0 var(--gold-dark),
+              inset var(--pix) var(--pix) 0 var(--gold-light);
   cursor: pointer;
   font-size: 16px;
   display: grid; place-items: center;
 }
-.pix-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+.pix-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
 .pix-btn:active { transform: translateY(2px); }
-.pix-btn:focus-visible, .pin:focus-visible, .hero:focus-visible, .visit:focus-visible, .drawer a:focus-visible, .drawer button:focus-visible {
-  outline: 3px dashed var(--yellow);
+.pix-btn:focus-visible, .pin:focus-visible, .hero:focus-visible, .visit:focus-visible,
+.linkrow a:focus-visible, .drawer a:focus-visible, .drawer button:focus-visible {
+  outline: 3px dashed var(--gold-light);
   outline-offset: 3px;
 }
 
@@ -105,7 +110,7 @@ body {
   position: relative;
   aspect-ratio: 16 / 9;
   border: var(--pix) solid var(--ink);
-  background: var(--navy);
+  background: var(--water);
   overflow: hidden;
 }
 
@@ -149,6 +154,11 @@ body {
   50%  { margin-top: -4px; }
   100% { margin-top: 0; }
 }
+@keyframes hop {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-3px); }
+  100% { transform: translateY(0); }
+}
 
 .legend {
   position: absolute; left: 10px; top: 10px;
@@ -163,19 +173,21 @@ body {
 .badge.green { background: var(--green); }
 .badge.red { background: var(--red); }
 
-/* ---------- hero sprite ---------- */
+/* ---------- guide sprite (bottom-left corner) ---------- */
 .hero {
   position: absolute;
-  left: 15%; top: 70%;
-  width: clamp(36px, 6vw, 60px);
+  left: 1.5%; bottom: 2.5%;
+  width: clamp(40px, 6vw, 64px);
   cursor: pointer;
-  animation: bob 1.4s steps(2) infinite;
+  animation: hop 1.4s steps(2) infinite;
+  z-index: 4;
 }
-.hero canvas { width: 100%; image-rendering: pixelated; display: block; filter: drop-shadow(0 3px 0 rgba(0,0,0,.45)); }
+.hero canvas { width: 100%; height: auto; image-rendering: pixelated; display: block; filter: drop-shadow(0 3px 0 rgba(0,0,0,.45)); }
 .bubble {
-  position: absolute; bottom: 110%; left: 50%;
-  transform: translateX(-20%);
-  width: max-content; max-width: 220px;
+  position: absolute;
+  left: calc(100% + 8px);
+  bottom: 45%;
+  width: max-content; max-width: 240px;
   background: var(--paper); color: var(--ink);
   border: 3px solid var(--ink);
   padding: 8px 10px;
@@ -183,14 +195,15 @@ body {
   line-height: 1.6;
   z-index: 6;
 }
+.bubble[hidden] { display: none; }
 
 /* ---------- bottom bar ---------- */
 .bottombar { margin-top: 14px; }
 .ticker {
   overflow: hidden;
-  background: #101830;
+  background: #1c0f08;
   border: var(--pix) solid var(--ink);
-  box-shadow: inset 0 0 0 3px #3b4a7a;
+  box-shadow: inset 0 0 0 3px var(--wood-dark);
   padding: 12px 0;
 }
 .ticker-track {
@@ -198,7 +211,7 @@ body {
   white-space: nowrap;
   padding-left: 100%;
   font-size: clamp(8px, 1.4vw, 13px);
-  color: #bfe9ff;
+  color: var(--gold-light);
   animation: scroll 38s linear infinite;
 }
 @keyframes scroll { to { transform: translateX(-100%); } }
@@ -206,15 +219,16 @@ body {
 .hint {
   text-align: center;
   font-size: 9px;
-  color: #bcd2ff;
-  margin: 18px 0 0;
+  color: #d9c4ee;
+  margin: 18px auto 0;
+  max-width: 700px;
   line-height: 1.8;
 }
 
 /* ---------- overlays / cards ---------- */
 .overlay {
   position: fixed; inset: 0;
-  background: rgba(4, 8, 26, .78);
+  background: rgba(10, 4, 20, .8);
   display: grid; place-items: center;
   padding: 16px;
   z-index: 50;
@@ -223,7 +237,7 @@ body {
 
 .card {
   position: relative;
-  width: min(560px, 100%);
+  width: min(580px, 100%);
   max-height: 90vh; overflow: auto;
   background: var(--paper);
   color: var(--ink);
@@ -236,15 +250,16 @@ body {
 .card:focus { outline: none; }
 
 .card h2 { font-size: clamp(13px, 2.4vw, 18px); line-height: 1.5; margin: 6px 40px 10px 0; }
-.card-kicker { font-size: 8px; color: #55507a; margin: 0; line-height: 1.6; padding-right: 40px; }
+.card-kicker { font-size: 8px; color: #6b4a32; margin: 0; line-height: 1.6; padding-right: 40px; }
 .status {
   display: inline-block; margin: 0 0 14px;
   font-size: 8px; padding: 6px 8px;
   border: 3px solid var(--ink);
+  line-height: 1.5;
 }
 .status.shipped { background: var(--green); }
 .status.rumored { background: var(--red); color: #fff; }
-.status.plain { background: var(--yellow); }
+.status.plain { background: var(--gold); }
 .card-body { font-size: 10px; line-height: 2; margin: 0 0 18px; }
 .card-body p { margin: 0 0 12px; }
 .close-btn { position: absolute; top: 12px; right: 12px; width: 38px; height: 38px; font-size: 13px; }
@@ -253,36 +268,64 @@ body {
   display: inline-block;
   font-family: var(--font); font-size: 10px;
   text-decoration: none; color: var(--ink);
-  background: var(--yellow);
+  background: var(--gold);
   border: var(--pix) solid var(--ink);
-  box-shadow: inset calc(var(--pix) * -1) calc(var(--pix) * -1) 0 #d9a91f;
+  box-shadow: inset calc(var(--pix) * -1) calc(var(--pix) * -1) 0 var(--gold-dark);
   padding: 12px 14px; margin: 0 8px 8px 0;
 }
 .visit:hover, .linkrow a:hover { filter: brightness(1.08); }
 .visit[hidden] { display: none; }
 
+/* how-to list */
+.howto { list-style: none; padding: 0; margin: 10px 0 0; counter-reset: step; }
+.howto li {
+  counter-increment: step;
+  display: flex; gap: 12px; align-items: flex-start;
+  font-size: 9px; line-height: 2;
+  margin-bottom: 14px;
+}
+.howto li::before {
+  content: counter(step);
+  flex: 0 0 24px; height: 24px;
+  display: grid; place-items: center;
+  background: var(--gold);
+  border: 3px solid var(--ink);
+  font-size: 9px; line-height: 1;
+  margin-top: 2px;
+}
+
+/* dev log */
+.log-entry { margin: 14px 0 20px; padding-bottom: 14px; border-bottom: 3px dashed #cbbf9d; }
+.log-entry:last-child { border-bottom: 0; }
+.log-entry h3 { font-size: 10px; line-height: 1.8; margin: 0 0 8px; }
+.log-entry ul { margin: 0 0 8px; padding-left: 16px; }
+.log-entry li { font-size: 9px; line-height: 2; margin-bottom: 6px; }
+.log-sub { font-size: 8px; color: #8e1f1b; margin: 10px 0 4px; line-height: 1.8; }
+
 /* ---------- drawer ---------- */
 .drawer {
   position: fixed; left: 0; top: 0; bottom: 0;
   width: min(300px, 82vw);
-  background: #0b1233;
-  border-right: var(--pix) solid var(--teal-light);
+  background: var(--wood-deep);
+  border-right: var(--pix) solid var(--gold);
   transform: translateX(-105%);
   transition: transform .25s steps(5);
   z-index: 40;
   padding: 90px 22px 22px;
+  overflow-y: auto;
 }
 .drawer.open { transform: translateX(0); }
-.drawer-title { font-size: 11px; color: var(--orange); margin: 0 0 18px; }
+.drawer-title { font-size: 11px; color: var(--gold); margin: 0 0 18px; }
 .drawer ul { list-style: none; padding: 0; margin: 0; }
-.drawer li { border-bottom: 2px solid #26346b; }
+.drawer li { border-bottom: 2px solid var(--wood-dark); }
 .drawer a, .drawer button {
   display: block; width: 100%; text-align: left;
   font-family: var(--font); font-size: 10px; line-height: 1.7;
-  color: #bfe9ff; background: none; border: 0;
+  color: #f1dfbf; background: none; border: 0;
   padding: 14px 4px; cursor: pointer; text-decoration: none;
 }
-.drawer a:hover, .drawer button:hover { color: var(--yellow); }
+.drawer a:hover, .drawer button:hover { color: var(--gold-light); }
+.drawer .group { padding: 16px 4px 6px; font-size: 8px; color: #b99872; border-bottom: 0; }
 .drawer .dot { display: inline-block; width: 10px; height: 10px; margin-right: 8px; border: 2px solid #000; }
 .drawer .dot.shipped { background: var(--green); }
 .drawer .dot.rumored { background: var(--red); }
@@ -296,7 +339,7 @@ body {
   .logo { padding: 8px 10px; }
   .legend { top: 6px; left: 6px; }
   .pin { width: 30px; }
-  .bubble { max-width: 130px; transform: translateX(-10%); }
+  .bubble { max-width: 130px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
