@@ -12,6 +12,18 @@
 window.DEVLOG = [
   {
     date: "2026-10-09",
+    title: "Round 4: new character sprite and green background",
+    items: [
+      "Replaced the guide with the sprite I supplied: big spiky hair, brown glasses, a navy tee, brown shorts, and gray sneakers. He still blinks and looks around.",
+      "Changed the page background to the same dark green as the title plate.",
+      "Still to do: sound effects (I will supply the audio), then the zoom-in worlds."
+    ],
+    misreads: [
+      "The AI's own anime-style sprite did not look like the one I wanted. It worked much better once I handed it an actual image to copy."
+    ]
+  },
+  {
+    date: "2026-10-09",
     title: "Round 3: handheld look, new character, intro",
     items: [
       "Changed the colors to an old handheld console: gray shell, dark screen bezel, maroon buttons, green screen text, and a teal background. No more purple or orange.",

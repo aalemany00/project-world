@@ -166,89 +166,119 @@
     }
   }
 
-  // ---------- guide sprite: an anime-style pixel Adrian ----------
-  //  20 x 30 pixels. The eyes are painted separately so he can blink and look around.
-  //  h/H hair, s/S skin, g glasses, e pupil, i iris, m/M mouth, t/T shirt, p jeans, k shoes
-  var HERO_W = 20, HERO_H = 32;
-
-  function dots(n) { return new Array(n + 1).join("."); }
-  function mid(inner) {                       // centre a row on the 20-pixel grid
-    var n = (HERO_W - inner.length) / 2;
-    return dots(n) + inner + dots(n);
-  }
-  function bodyRow(arm1, torso, arm2) { return "....o" + arm1 + "o" + torso + "o" + arm2 + "o...."; }
-
-  var HERO_ROWS = [
-    "..........o.........",
-    ".........ohho.......",
-    "......o..ohhoo.o....",
-    ".....ohho.ohhhoohho.",
-    "....ohhhohhhhhhhohho",
-    "..o.ohHhhhhhhHhhhhho",
-    ".ohoohhhhhhhhhhhhhho",
-    "..ohhhhhhhhhhhhho...",
-    mid("o" + "hhhssshhsshh" + "o"),
-    mid("o" + "hssssssssssh" + "o"),
-    mid("o" + "gggggssggggg" + "o"),
-    mid("o" + "gsssggggsssg" + "o"),
-    mid("o" + "gsssgssgsssg" + "o"),
-    mid("o" + "gsssgssgsssg" + "o"),
-    mid("o" + "gggggssggggg" + "o"),
-    mid("o" + "sssssSSsssss" + "o"),
-    mid("o" + "ssssmMMmssss" + "o"),
-    mid("o" + "sssssmmsssss" + "o"),
-    mid("o" + "ssssssssss" + "o"),
-    mid("o" + "ssssssss" + "o"),
-    mid("o" + "ss" + "o"),
-    mid("o" + "ttttsstttt" + "o"),
-    bodyRow("t", "ttTttt", "t"),
-    bodyRow("t", "tttttt", "t"),
-    bodyRow("s", "tttttt", "s"),
-    bodyRow("s", "tttttt", "s"),
-    bodyRow("s", "tttttt", "s"),
-    mid("o" + "pppppp" + "o"),
-    mid("o" + "ppoopp" + "o"),
-    mid("o" + "ppoopp" + "o"),
-    mid("o" + "ppoopp" + "o"),
-    mid("o" + "kkkk" + "oo" + "kkkk" + "o")
-  ];
+  // ---------- guide sprite: anime-style pixel Adrian (28 x 46) ----------
+  //  Built from shapes so it is easy to tweak. The eyes are painted separately
+  //  so he can blink and look around.
+  var HERO_W = 28, HERO_H = 46;
 
   var HERO_COLORS = {
-    o: "#120d1c", h: "#2b2338", H: "#4a3d63",
-    s: "#f7d0b6", S: "#e0a98c", g: "#7a4f2e", e: "#1a0f0a", i: "#7b2a3a",
-    m: "#b5584f", M: "#6e2430", t: "#3a3d52", T: "#565b78",
-    p: "#2f4a85", k: "#b8bdd0", w: "#ffffff"
+    o: "#0b0910",                      // outline
+    h: "#3a3447", d: "#2a2535", H: "#4f4668",   // hair, hair shadow, hair highlight
+    s: "#f3c5a6", S: "#e59f87",        // skin, skin shade
+    g: "#6d4426",                      // glasses
+    w: "#ffffff", i: "#6b1e2c", e: "#0b0910",   // eye white, iris, pupil
+    m: "#a8524f",                      // mouth
+    t: "#2f3150", T: "#4a5578",        // shirt, collar
+    r: "#7a5232", R: "#5b3a22",        // shorts, waistband
+    k: "#b4b4c6", K: "#6b6e84"         // sneakers, soles
   };
 
+  function buildHeroGrid() {
+    var g = [], x, y;
+    for (y = 0; y < HERO_H; y++) { g.push([]); for (x = 0; x < HERO_W; x++) g[y].push("."); }
+    function rect(rx, ry, w, h, ch) {
+      for (var j = ry; j < ry + h; j++)
+        for (var i = rx; i < rx + w; i++)
+          if (i >= 0 && i < HERO_W && j >= 0 && j < HERO_H) g[j][i] = ch;
+    }
+    function px(ix, iy, ch) { rect(ix, iy, 1, 1, ch); }
+    function spans(list, ch) { list.forEach(function (s) { rect(s[1], s[0], s[2] - s[1] + 1, 1, ch); }); }
+
+    // neck, ears, face
+    rect(12, 27, 4, 3, "s");
+    rect(5, 19, 2, 4, "s"); rect(21, 19, 2, 4, "s");
+    rect(7, 14, 14, 10, "s");
+    spans([[24, 8, 19], [25, 9, 18], [26, 11, 16], [27, 12, 15]], "s");
+
+    // body
+    rect(10, 30, 8, 9, "t");
+    rect(8, 30, 2, 3, "t"); rect(18, 30, 2, 3, "t");       // sleeves
+    rect(7, 30, 1, 3, "t"); rect(20, 30, 1, 3, "t");
+    rect(7, 33, 2, 6, "s"); rect(19, 33, 2, 6, "s");       // arms and hands
+    spans([[39, 9, 18], [40, 9, 18], [41, 9, 12], [41, 15, 18], [42, 9, 12], [42, 15, 18]], "r");
+    rect(10, 43, 3, 1, "s"); rect(15, 43, 3, 1, "s");      // legs
+    spans([[44, 8, 12], [45, 6, 12], [44, 15, 19], [45, 15, 21]], "k");
+
+    // spiky hair (drawn over the face)
+    spans([
+      [0, 7, 8], [1, 7, 9], [2, 7, 10], [2, 15, 16],
+      [3, 6, 10], [3, 15, 17], [3, 22, 23],
+      [4, 6, 12], [4, 14, 18], [4, 21, 24],
+      [5, 4, 24], [6, 3, 25], [7, 2, 26], [8, 1, 26], [9, 1, 27],
+      [10, 1, 26], [11, 0, 25], [12, 0, 24], [13, 1, 23],
+      [14, 4, 9], [14, 12, 14], [14, 18, 23],
+      [15, 5, 7], [15, 20, 22], [16, 4, 6], [16, 21, 23],
+      [17, 4, 6], [17, 21, 23], [18, 21, 23]
+    ], "h");
+    px(13, 15, "h");
+
+    // automatic outline around everything
+    var out = [];
+    for (y = 0; y < HERO_H; y++) for (x = 0; x < HERO_W; x++) {
+      if (g[y][x] !== ".") continue;
+      if ((y > 0 && g[y - 1][x] !== ".") || (y < HERO_H - 1 && g[y + 1][x] !== ".") ||
+          (x > 0 && g[y][x - 1] !== ".") || (x < HERO_W - 1 && g[y][x + 1] !== ".")) out.push([x, y]);
+    }
+    out.forEach(function (p) { g[p[1]][p[0]] = "o"; });
+
+    // details
+    [[8,5],[12,6],[18,6],[6,8],[22,8],[10,9],[15,10],[4,10],[24,10],[13,3],[16,12],[9,12]].forEach(function (p) { px(p[0], p[1], "d"); });
+    [[8,1],[16,3],[22,4],[5,8],[25,9],[9,5]].forEach(function (p) { px(p[0], p[1], "H"); });
+    rect(9, 15, 3, 1, "d"); rect(16, 15, 3, 1, "d");            // eyebrows
+    rect(5, 19, 1, 4, "S"); rect(22, 19, 1, 4, "S");            // ear shade
+    // glasses
+    rect(7, 16, 6, 1, "g"); rect(15, 16, 6, 1, "g");
+    rect(7, 21, 6, 1, "g"); rect(15, 21, 6, 1, "g");
+    rect(7, 17, 1, 4, "g"); rect(12, 17, 1, 4, "g");
+    rect(15, 17, 1, 4, "g"); rect(20, 17, 1, 4, "g");
+    rect(13, 17, 2, 1, "g");
+    rect(12, 23, 4, 1, "m");                                    // mouth
+    rect(12, 30, 4, 1, "T");                                    // collar
+    rect(9, 39, 10, 1, "R");                                    // waistband
+    rect(6, 45, 7, 1, "K"); rect(15, 45, 7, 1, "K");            // soles
+    return g;
+  }
+
+  var HERO_GRID = buildHeroGrid();
   var heroState = { blink: false, look: 0 };
   var heroCanvases = [];
 
-  function paintEyes(ctx, x0) {                // each lens is 3 x 3 pixels, rows 11-13
+  function paintEyes(ctx, x0) {                // each lens is 4 x 4 pixels, rows 17-20
     if (heroState.blink) {
-      ctx.fillStyle = HERO_COLORS.s; ctx.fillRect(x0, 11, 3, 3);
-      ctx.fillStyle = HERO_COLORS.e; ctx.fillRect(x0, 12, 3, 1);
+      ctx.fillStyle = HERO_COLORS.s; ctx.fillRect(x0, 17, 4, 4);
+      ctx.fillStyle = HERO_COLORS.e; ctx.fillRect(x0, 19, 4, 1);
       return;
     }
-    ctx.fillStyle = HERO_COLORS.w; ctx.fillRect(x0, 11, 3, 3);
-    var ix = x0 + 1 + heroState.look;
-    ctx.fillStyle = HERO_COLORS.i; ctx.fillRect(ix, 11, 1, 3);
-    ctx.fillStyle = HERO_COLORS.e; ctx.fillRect(ix, 12, 1, 1);
+    ctx.fillStyle = HERO_COLORS.w; ctx.fillRect(x0, 17, 4, 4);
+    var ix = x0 + 1 + heroState.look;          // two-pixel-wide iris that slides left and right
+    ctx.fillStyle = HERO_COLORS.i; ctx.fillRect(ix, 17, 2, 4);
+    ctx.fillStyle = HERO_COLORS.e; ctx.fillRect(ix + (heroState.look < 0 ? 0 : 1), 18, 1, 2);
   }
 
   function paintHero(canvas) {
     var ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, HERO_W, HERO_H);
-    HERO_ROWS.forEach(function (row, y) {
+    for (var y = 0; y < HERO_H; y++) {
       for (var x = 0; x < HERO_W; x++) {
-        var ch = row.charAt(x);
-        if (ch && ch !== "." && HERO_COLORS[ch]) {
+        var ch = HERO_GRID[y][x];
+        if (ch !== "." && HERO_COLORS[ch]) {
           ctx.fillStyle = HERO_COLORS[ch];
           ctx.fillRect(x, y, 1, 1);
         }
       }
-    });
-    paintEyes(ctx, 5);
-    paintEyes(ctx, 12);
+    }
+    paintEyes(ctx, 8);
+    paintEyes(ctx, 16);
   }
 
   function setHero(change) {
