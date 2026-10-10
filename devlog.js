@@ -14,12 +14,12 @@ window.DEVLOG = [
     date: "2026-10-09",
     title: "Round 4: new character sprite and green background",
     items: [
-      "Replaced the guide with the sprite I supplied: big spiky hair, brown glasses, a navy tee, brown shorts, and gray sneakers. He still blinks and looks around.",
+      "Replaced the guide with the exact sprite image I supplied (cut out of its blue background): big spiky hair, brown glasses, a navy tee, brown shorts, and gray sneakers. He still blinks and looks around; his eyes are redrawn on top of the picture.",
       "Changed the page background to the same dark green as the title plate.",
       "Still to do: sound effects (I will supply the audio), then the zoom-in worlds."
     ],
     misreads: [
-      "The AI's own anime-style sprite did not look like the one I wanted. It worked much better once I handed it an actual image to copy."
+      "The AI kept redrawing my character by hand and it never matched the picture I gave it. It only got right when I told it to use the actual image, and to show me a preview before putting it in the site."
     ]
   },
   {
