@@ -47,10 +47,11 @@ window.CARDS = [
   {
     id: 2,
     name: "Artifact 2: Something You Will Use",
-    status: "rumored",
+    status: "shipped",
     title: "Shelf Scanner",
-    link: "",
-    reflection: "",
+    link: "https://aalemany00.github.io/shelf-scanner/",
+    reflection:
+      "TODO - write this yourself: a few sentences on how it went and what you learned.",
     idea:
       "Scan a barcode with my phone camera and it pulls the item's name, info, and cover image, then files it into the right category on a visual bookshelf. Built for my video game and comic collection.",
     theme: "cyber",
