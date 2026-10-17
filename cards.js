@@ -39,7 +39,7 @@ window.CARDS = [
     title: "Project World (this site)",
     link: "./",
     reflection:
-      "DRAFT - rewrite in your own words: I built this in a web chat by starting with an interview instead of a prompt, so the AI knew who the site was for before it wrote any code. I designed the map first, then built it in layers so something submittable existed early. I learned that the clearer my goals were up front, the less I had to fix later.",
+      "I built this in a web chat by starting with an interview instead of a prompt, so the AI knew who the site was for before it wrote any code. I designed the map first, then built it in layers so something submittable existed early. I learned that the clearer my goals were up front, the less I had to fix later.",
     idea: "",
     theme: "hub",
     x: 24, y: 58
@@ -51,7 +51,7 @@ window.CARDS = [
     title: "Shelf Scanner",
     link: "https://aalemany00.github.io/shelf-scanner/",
     reflection:
-      "TODO - write this yourself: a few sentences on how it went and what you learned.",
+      "I built a PWA that scans a barcode or searches by title to catalog my games, figures, comics, and movies, synced between my phone and laptop with Firebase. The barcode scanning turned out to be the hardest part — a live camera feed looked like it should work but silently failed on iPhone, so I switched to snapping a single photo and decoding that instead. Watching how a real comic-tracking site organizes its collection pushed me to add series grouping and Have/Want/Read status to the comics side, which taught me that “it runs” and “it’s actually useful” aren’t the same bar. I learned to verify things myself rather than assume a library or API worked just because the code looked right — several of the real bugs only showed up once I tested on an actual phone.",
     idea:
       "Scan a barcode with my phone camera and it pulls the item's name, info, and cover image, then files it into the right category on a visual bookshelf. Built for my video game and comic collection.",
     theme: "cyber",
