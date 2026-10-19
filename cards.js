@@ -51,9 +51,9 @@ window.CARDS = [
     title: "Shelf Scanner",
     link: "https://aalemany00.github.io/shelf-scanner/",
     reflection:
-      "I built a PWA that scans a barcode or searches by title to catalog my games, figures, comics, and movies, synced between my phone and laptop with Firebase. The barcode scanning turned out to be the hardest part — a live camera feed looked like it should work but silently failed on iPhone, so I switched to snapping a single photo and decoding that instead. Watching how a real comic-tracking site organizes its collection pushed me to add series grouping and Have/Want/Read status to the comics side, which taught me that “it runs” and “it’s actually useful” aren’t the same bar. I learned to verify things myself rather than assume a library or API worked just because the code looked right — several of the real bugs only showed up once I tested on an actual phone.",
+      "I built a PWA that scans a barcode or searches by title to catalog my games, figures, comics, and movies, synced between my phone and laptop with Firebase. The barcode scanning turned out to be the hardest part. A live camera feed looked like it should work but failed on iPhone, so I switched to snapping a single photo and decoding that instead. Looking at how a real comic-tracking site organizes its collection pushed me to add series grouping and Have/Want/Read status to the comics side, which taught me that “it runs” and “it’s actually useful” aren’t the same. I learned to verify things myself rather than assume a library or API worked just because the code looked right. Several of the real bugs only showed up once I tested on an actual phone.",
     idea:
-      "Scan a barcode with my phone camera and it pulls the item's name, info, and cover image, then files it into the right category on a visual bookshelf. Built for my video game and comic collection.",
+      "Scan a barcode with my phone camera, and it pulls the item's name, info, and cover image, then files it into the right category on a visual bookshelf. Built for my video game and comic collection.",
     theme: "cyber",
     x: 47, y: 30
   },
