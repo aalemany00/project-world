@@ -64,7 +64,7 @@ window.CARDS = [
     title: "Upkeep",
     link: "https://aalemany00.github.io/upkeep/",
     reflection:
-      "TODO - write this yourself: a few sentences on how it went and what you learned.",
+      "I built a health tracker that logs food, gym, water, steps, weight, and vitamins across devices, with a weekly AI coaching note. Firebase was the most confusing part — I'd barely touched it in Artifact 2, so this time I actually had to understand Auth and Firestore instead of just following steps. The AI coach was trickier: every example I found online ran its AI feedback through a paid API key, and I didn't want to build something that only worked if I kept paying for it. That mattered even more once I realized classmates and friends might use this too — giving everyone their own AI account would mean someone eventually has to pay for it. Claude actually misread me here: it assumed I wanted everyone supplying their own setup, when what I actually wanted was pure convenience — tracking health stuff is already a hassle, and I didn't want to add more friction on top of it. We landed on one script, run by me, that generates everyone's note instead.",
     idea:
       "A health tracker for food/calories/protein, gym workouts, water, steps, weight, and vitamins, synced across devices. Every week, Claude Code reads your logged data (headless, no API key) and writes back a short coaching note on what's working and what to try next.",
     theme: "ocean",
