@@ -60,12 +60,13 @@ window.CARDS = [
   {
     id: 3,
     name: "Artifact 3: AI Inside It",
-    status: "rumored",
-    title: "Learning Improver",
-    link: "",
-    reflection: "",
+    status: "shipped",
+    title: "Upkeep",
+    link: "https://aalemany00.github.io/upkeep/",
+    reflection:
+      "TODO - write this yourself: a few sentences on how it went and what you learned.",
     idea:
-      "Ask it a question or a whole topic. It finds good sources and textbooks, explains the subject, builds a study plan that fits how I focus, then quizzes me with flashcards and practice questions.",
+      "A health tracker for food/calories/protein, gym workouts, water, steps, weight, and vitamins, synced across devices. Every week, Claude Code reads your logged data (headless, no API key) and writes back a short coaching note on what's working and what to try next.",
     theme: "ocean",
     x: 73, y: 62
   },
