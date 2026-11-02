@@ -73,12 +73,12 @@ window.CARDS = [
   {
     id: 4,
     name: "Artifact 4: For Someone Else",
-    status: "rumored",
-    title: "Watch Party for Two",
-    link: "",
-    reflection: "",
-    idea:
-      "A watch-party site for long-distance couples: play the same video in sync (YouTube, Twitch, and more), with a chat room and camera and mic so my partner and I can watch and talk in one place.",
+    status: "shipped",
+    title: "CouchCrew",
+    link: "https://couch-crew.vercel.app",
+    reflection:
+      "I built CouchCrew with Henry and John — a watch-party site for people who can't be in the same room: synced YouTube playback, chat, mic/camera, and screen share, all in one link. The real test case is me and my long-distance partner. We split the work into three pieces (rooms/chat, video, watch-sync) and PR'd into one shared repo instead of three separate codebases, which meant actually dealing with collisions — Henry and I independently built the same server endpoint for video rooms on separate branches before either of us knew, and I had to pick one implementation (his, since it handled a race condition mine didn't) and resolve the conflict by hand. The biggest surprise was Daily.co, the video service we picked first: it advertised a free tier but still required a credit card on the account just to use it at all, which I only found out after our video calls started failing in production. Rather than hand a teammate that card risk, I switched the whole team to Jitsi Meet's public server instead, which needs no account at all — a reminder that \"free\" and \"no setup\" aren't the same claim. I also looked into syncing Netflix/Hulu directly and confirmed it's blocked by DRM, so screen-share is the fallback for anything outside YouTube. Once the core worked, I pushed the look further than the assignment needed — a retro drive-in theater shell with genre-based room themes and a few hidden interactions — because a tool I'll actually keep using with my partner should feel like somewhere, not just work.",
+    idea: "",
     theme: "dusk",
     x: 60, y: 82
   },
