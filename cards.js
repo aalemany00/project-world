@@ -85,12 +85,12 @@ window.CARDS = [
   {
     id: 5,
     name: "Artifact 5: The Moonshot",
-    status: "rumored",
-    title: "Platform Fighter",
-    link: "",
-    reflection: "",
-    idea:
-      "A 2D platform fighter with about six characters, simple controls, great visuals, and gameplay that is easy to pick up and hard to put down. Possibly deployed so anyone can play.",
+    status: "shipped",
+    title: "TomeAndTile",
+    link: "https://github.com/Henry-theBinaryBuddies/TomeAndTile",
+    reflection:
+      "I'm building this one with Henry and Danny: a virtual tabletop for running D&D sessions, with real-time video, dice, and a map/token renderer, built contracts-first so our three areas (server and rules, the web client, and my piece — importers and the video module) can't drift out of sync with each other. I own integrations and web/media/, so I had Claude build an importer field map for a monster-stat-block tool, a pipeline that inspects uploaded map and token images, and the video/voice client wrapper around LiveKit. The field map round-tripped twice: a teammate's review caught real mistakes the first time, and a merged contract change made my first round of fixes stale before it even merged. I had Claude go check what had actually landed on GitHub instead of assuming the document still held up, which is the only reason the second round was right. The image-pipeline piece is the one I'm least sure of so far — there was no Rust compiler anywhere in my setup to actually run it, so it's verified by careful reading, not by a real test run, and I said that plainly instead of pretending otherwise. Still mid-build, with milestones through December.",
+    idea: "",
     theme: "dark",
     x: 84, y: 24
   }

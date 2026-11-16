@@ -50,10 +50,21 @@ I asked Claude to interview me one question at a time before building anything. 
 
 - Add entries here as I notice them. (Required by the course: where did the AI misread what I wanted?)
 
+## 2026-11-15 — Artifact 5 card and dev log
+
+The Artifact 5 card was still the "Platform Fighter" placeholder from the original
+brainstorm. Replaced it with the real build: TomeAndTile, a virtual tabletop built
+with two teammates (Henry, Danny), my part being the monster-stat-block importer and
+the video/voice module. Status moved from "rumored" to "shipped" — it's no longer just
+an idea, even though the moonshot itself runs through December. Link points at the
+team's GitHub repo for now, since nothing is deployed yet. Added two rounds to the
+in-site dev log (`devlog.js`) covering the field map's two review passes and the two
+new pieces built this round (the image-inspection pipeline, the LiveKit wrapper).
+
 ## Open items
 
 - [ ] Rewrite the Artifact 1 reflection in my own words (it is a draft in `cards.js`).
 - [ ] Put the live GitHub Pages link into the Artifact 1 card (and submit it on Canvas).
 - [ ] Pick a better world name than "Project World".
-- [ ] Decide which theme goes with which artifact (currently: A2 cyberpunk, A3 ocean, A4 dusk village, A5 dark neighborhood, all tentative).
+- [ ] Decide which theme goes with which artifact (currently: A2 cyberpunk, A3 ocean, A4 dusk village, A5 dark/moonshot, all tentative).
 - [ ] Layer 2: zoom-in scenes.
