@@ -93,5 +93,17 @@ window.CARDS = [
     idea: "",
     theme: "dark",
     x: 84, y: 24
+  },
+  {
+    id: 6,
+    name: "Extra Artifact: Build Another Artifact",
+    status: "shipped",
+    title: "OS Quest",
+    link: "https://aalemany00.github.io/os-quest/",
+    reflection:
+      "A study game for my TCSS 422 (Operating Systems) class: flashcards, quizzes, matching, and two things I actually wanted to see work — a scheduler simulator that computes FIFO/SJF/STCF/RR/MLFQ schedules for real instead of having hand-typed answers, and a step-through race-condition visualizer. I kept adding to it all quarter as new lectures landed instead of building it once and walking away, which is closer to how I actually study than any of my other artifacts. The profile system turned into its own small project — once I realized I'd use this on more than one device, I added export/import, then swapped file-based sync for a copy-paste code because the file picker was more friction than it was worth, then added an optional PIN so a shared-computer profile can't just be clicked open. The most useful bug was a dead-end: the Readings tab had no way back to the hub, which only showed up because I was actually using the thing to study, not just testing that it loaded.",
+    idea: "",
+    theme: "ocean",
+    x: 15, y: 20
   }
 ];
