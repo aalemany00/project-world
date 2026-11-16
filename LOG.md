@@ -54,7 +54,7 @@ I asked Claude to interview me one question at a time before building anything. 
 
 The Artifact 5 card was still the "Platform Fighter" placeholder from the original
 brainstorm. Replaced it with the real build: TomeAndTile, a virtual tabletop built
-with two teammates (Henry, Danny), my part being the monster-stat-block importer and
+with two teammates (Henry, John), my part being the monster-stat-block importer and
 the video/voice module. Status moved from "rumored" to "shipped" — it's no longer just
 an idea, even though the moonshot itself runs through December. Link points at the
 team's GitHub repo for now, since nothing is deployed yet. Added two rounds to the
