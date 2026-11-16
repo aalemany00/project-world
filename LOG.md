@@ -61,6 +61,15 @@ team's GitHub repo for now, since nothing is deployed yet. Added two rounds to t
 in-site dev log (`devlog.js`) covering the field map's two review passes and the two
 new pieces built this round (the image-inspection pipeline, the LiveKit wrapper).
 
+## 2026-11-16 — Extra Artifact card: OS Quest
+
+Added card 6: OS Quest, a TCSS 422 study game I'd already been building all quarter, filed
+under the course's "build another artifact" extra-credit option (+0.3 to the final grade).
+Linked it to its live GitHub Pages site. Its own repo had 21 commits but no plans/changes log,
+so added one there too, then enriched it with detail from a longer technical build log I added
+myself. Also logged the extra-labor policy itself into this project's shared `COURSE_GUIDE.md`.
+Added a matching dev-log entry (`devlog.js`).
+
 ## Open items
 
 - [ ] Rewrite the Artifact 1 reflection in my own words (it is a draft in `cards.js`).
