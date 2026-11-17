@@ -5,6 +5,7 @@
 //  For each card:
 //    status:     "shipped"  -> green pin (finished)
 //                "rumored"  -> red pin (still just an idea)
+//                "in progress" -> yellow pin (still being worked on)
 //    title:      name of what you built
 //    link:       URL to what you built ("" if there isn't one yet)
 //    reflection: a few sentences on how it went and what you learned
@@ -85,7 +86,7 @@ window.CARDS = [
   {
     id: 5,
     name: "Artifact 5: The Moonshot",
-    status: "shipped",
+    status: "in progress",
     title: "TomeAndTile",
     link: "https://github.com/Henry-theBinaryBuddies/TomeAndTile",
     reflection:
