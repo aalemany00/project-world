@@ -13,7 +13,7 @@
 
   var HELP = [
     "Click any pin on the map to open that project's card.",
-    "Green pins are projects I have shipped. Red pins are ideas I have not built yet.",
+    "Green pins are projects I have shipped. Yellow pins are in progress. Red pins are ideas I have not built yet.",
     "The menu (top left) has About Me, the Quest Log to jump to any artifact, and the Dev Log.",
     "Click the little guide in the bottom-left corner for tips.",
     "On a keyboard: Tab moves between pins, Enter opens one, Esc closes anything.",
@@ -38,7 +38,8 @@
     cyber: { land: "#5b3fa8", land2: "#4a3290", shore: "#ff4fd8", deep: "#1c2160" },
     ocean: { land: "#2aa6a0", land2: "#1f8a8c", shore: "#bff5f0", deep: "#0f4a73" },
     dusk:  { land: "#b8658a", land2: "#9d5075", shore: "#ffd1a6", deep: "#1e2a6a" },
-    dark:  { land: "#4b4a52", land2: "#37363e", shore: "#8f2d2d", deep: "#10162f" }
+    dark:  { land: "#4b4a52", land2: "#37363e", shore: "#8f2d2d", deep: "#10162f" },
+    amber: { land: "#c79a3f", land2: "#a67e2f", shore: "#fff0c2", deep: "#2a1e55" }
   };
 
   // ---------- draw the map ----------
@@ -132,9 +133,10 @@
   function drawPin(canvas, status) {
     var ctx = canvas.getContext("2d");
     var shipped = status === "shipped";
-    var fill = shipped ? "#3fbf6a" : "#e0453f";
-    var dark = shipped ? "#1d7a3f" : "#8e1f1b";
-    var light = shipped ? "#8cf0ae" : "#ff8b85";
+    var inProgress = status === "in-progress";
+    var fill = shipped ? "#3fbf6a" : inProgress ? "#e0b53f" : "#e0453f";
+    var dark = shipped ? "#1d7a3f" : inProgress ? "#8e6e1b" : "#8e1f1b";
+    var light = shipped ? "#8cf0ae" : inProgress ? "#f5dc8c" : "#ff8b85";
     var rows = [
       "..oooooooo..",
       ".oLLLLLLLLo.",
@@ -157,7 +159,7 @@
       }
     });
     ctx.fillStyle = "#fff";
-    if (shipped) {
+    if (shipped || inProgress) {
       [[5,3],[6,3],[4,4],[5,4],[6,4],[7,4],[3,5],[4,5],[5,5],[6,5],[7,5],[8,5],[4,6],[5,6],[6,6],[7,6],[4,7],[5,7],[6,7],[7,7],[3,8],[4,8],[7,8],[8,8]]
         .forEach(function (p) { ctx.fillRect(p[0], p[1], 1, 1); });
     } else {
@@ -344,15 +346,17 @@
 
     var st = byId("cardStatus");
     var shipped = data.status === "shipped";
-    st.textContent = shipped ? "SHIPPED" : "IDEA - NOT BUILT YET";
-    st.className = "status " + (shipped ? "shipped" : "rumored");
+    var inProgress = data.status === "in-progress";
+    var built = shipped || inProgress;
+    st.textContent = shipped ? "SHIPPED" : inProgress ? "IN PROGRESS" : "IDEA - NOT BUILT YET";
+    st.className = "status " + (shipped ? "shipped" : inProgress ? "in-progress" : "rumored");
 
-    byId("cardBody").textContent = shipped
+    byId("cardBody").textContent = built
       ? (data.reflection || "Reflection coming soon.")
       : (data.idea || "Idea coming soon.");
 
     var link = byId("cardLink");
-    if (shipped && data.link) {
+    if (built && data.link) {
       link.hidden = false;
       link.href = data.link;
       link.target = data.link === "./" ? "_self" : "_blank";
@@ -447,7 +451,7 @@
       btn.type = "button";
       btn.style.left = card.x + "%";
       btn.style.top = card.y + "%";
-      btn.setAttribute("aria-label", card.name + ": " + card.title + " (" + (card.status === "shipped" ? "shipped" : "idea") + ")");
+      btn.setAttribute("aria-label", card.name + ": " + card.title + " (" + (card.status === "shipped" ? "shipped" : card.status === "in-progress" ? "in progress" : "idea") + ")");
       var c = document.createElement("canvas");
       c.width = 12; c.height = 12;
       drawPin(c, card.status);
@@ -526,6 +530,7 @@
     ];
     CARDS.forEach(function (c) {
       if (c.status === "shipped") parts.push("ARTIFACT " + c.id + " SHIPPED: " + c.title.toUpperCase());
+      if (c.status === "in-progress") parts.push("ARTIFACT " + c.id + " IN PROGRESS: " + c.title.toUpperCase());
     });
     byId("ticker").textContent = parts.join("   ▪   ");
   }
@@ -534,7 +539,7 @@
   var LINES = [
     "Welcome to Project World!",
     "Every pin is a project I built.",
-    "Red pins are ideas. Green pins are shipped!",
+    "Red pins are ideas. Yellow pins are in progress. Green pins are shipped!",
     "More islands unlock as the quarter goes on.",
     "Open the menu to read the dev log."
   ];

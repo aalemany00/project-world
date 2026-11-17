@@ -3,8 +3,9 @@
 //  This is the ONLY file you need to edit when you finish an artifact.
 //
 //  For each card:
-//    status:     "shipped"  -> green pin (finished)
-//                "rumored"  -> red pin (still just an idea)
+//    status:     "shipped"     -> green pin (finished)
+//                "in-progress" -> yellow pin (built, but not done yet)
+//                "rumored"     -> red pin (still just an idea)
 //    title:      name of what you built
 //    link:       URL to what you built ("" if there isn't one yet)
 //    reflection: a few sentences on how it went and what you learned
@@ -85,7 +86,7 @@ window.CARDS = [
   {
     id: 5,
     name: "Artifact 5: The Moonshot",
-    status: "shipped",
+    status: "in-progress",
     title: "TomeAndTile",
     link: "https://github.com/Henry-theBinaryBuddies/TomeAndTile",
     reflection:
@@ -103,7 +104,7 @@ window.CARDS = [
     reflection:
       "A study game for my TCSS 422 (Operating Systems) class: flashcards, quizzes, matching, and two things I actually wanted to see work — a scheduler simulator that computes FIFO/SJF/STCF/RR/MLFQ schedules for real instead of having hand-typed answers, and a step-through race-condition visualizer. I kept adding to it all quarter as new lectures landed instead of building it once and walking away, which is closer to how I actually study than any of my other artifacts. The profile system turned into its own small project — once I realized I'd use this on more than one device, I added export/import, then swapped file-based sync for a copy-paste code because the file picker was more friction than it was worth, then added an optional PIN so a shared-computer profile can't just be clicked open. The most useful bug was a dead-end: the Readings tab had no way back to the hub, which only showed up because I was actually using the thing to study, not just testing that it loaded.",
     idea: "",
-    theme: "ocean",
+    theme: "amber",
     x: 15, y: 20
   }
 ];

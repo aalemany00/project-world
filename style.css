@@ -22,6 +22,7 @@
   --paper: #ecebe3;
   --green: #3fbf6a;
   --red: #e0453f;
+  --yellow: #e0b53f;
 
   --pix: 4px;
   --font: "Press Start 2P", "Courier New", monospace;
@@ -323,6 +324,7 @@ body {
   line-height: 1.5;
 }
 .status.shipped { background: var(--green); }
+.status.in-progress { background: var(--yellow); }
 .status.rumored { background: var(--red); color: #fff; }
 .status.plain { background: var(--lcd); }
 .card-body { font-size: 10px; line-height: 2; margin: 0 0 18px; }
@@ -394,6 +396,7 @@ body {
 .drawer .group { padding: 16px 4px 6px; font-size: 8px; color: #a9a8a0; border-bottom: 0; }
 .drawer .dot { display: inline-block; width: 10px; height: 10px; margin-right: 8px; border: 2px solid #000; }
 .drawer .dot.shipped { background: var(--green); }
+.drawer .dot.in-progress { background: var(--yellow); }
 .drawer .dot.rumored { background: var(--red); }
 .menu-btn { position: relative; z-index: 45; }
 
