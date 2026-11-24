@@ -117,6 +117,31 @@ instead of trusting what was on disk.
   (`docs/devlog/aalemany00.md`) the same way; all three were already current with their
   repos' actual commit history, so nothing needed changing there.
 
+## 2026-11-24 — Mini sections in the dev log, one per artifact
+
+The dev log had grown into one long flat list (33 entries across 6 different projects)
+and was hard to track — asked for it to be broken into mini sections per artifact
+instead.
+
+- Tagged every `devlog.js` entry with which artifact it belongs to (`artifact:` field:
+  Project World, Shelf Scanner, Upkeep, CouchCrew, TomeAndTile, or OS Quest). Split the
+  one entry that actually covered two different artifacts (a portfolio status-pin
+  change and a TomeAndTile PR review, both dated 2026-11-17) into two separate entries
+  so each lands in the right section.
+- Reworked the dev log panel (`main.js`'s `openDevlog`) to group entries by artifact
+  into collapsible `<details>` sections instead of one continuous scroll — each section
+  is labeled with the artifact name and its entry count, entries inside stay
+  newest-first, and the sections themselves are ordered by whichever project was
+  touched most recently (which falls out naturally from grouping-in-place, since the
+  underlying array is already newest-first overall). Only the most recently active
+  section opens by default; the rest start collapsed.
+- Styled the section headers (`style.css`) to match the rest of the site's pixel-button
+  look rather than introducing a new UI pattern.
+- Verified live (via a local static server, not just by reading the code): all 6
+  sections appear with correct counts that sum to the full entry count, only
+  TomeAndTile's section is open on load, and clicking another section's header expands
+  it in place.
+
 ## Open items
 
 - [ ] Rewrite the Artifact 1 reflection in my own words (it is a draft in `cards.js`).

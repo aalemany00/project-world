@@ -404,40 +404,74 @@
     showPanel(byId("helpOverlay"), byId("helpCard"), opener);
   }
 
+  function renderLogEntry(entry) {
+    var wrap = document.createElement("section");
+    wrap.className = "log-entry";
+
+    var h = document.createElement("h3");
+    h.textContent = entry.date + " | " + entry.title;
+    wrap.appendChild(h);
+
+    var ul = document.createElement("ul");
+    (entry.items || []).forEach(function (t) {
+      var li = document.createElement("li");
+      li.textContent = t;
+      ul.appendChild(li);
+    });
+    wrap.appendChild(ul);
+
+    if (entry.misreads && entry.misreads.length) {
+      var sub = document.createElement("p");
+      sub.className = "log-sub";
+      sub.textContent = "WHERE THE AI MISREAD ME";
+      wrap.appendChild(sub);
+      var ul2 = document.createElement("ul");
+      entry.misreads.forEach(function (t) {
+        var li = document.createElement("li");
+        li.textContent = t;
+        ul2.appendChild(li);
+      });
+      wrap.appendChild(ul2);
+    }
+    return wrap;
+  }
+
   function openDevlog(opener) {
     var body = byId("devlogBody");
     body.textContent = "";
+
+    // Group entries into mini sections per artifact. DEVLOG is newest-first
+    // overall, so each artifact's first appearance here is also its most
+    // recently active round - grouping this way (instead of re-sorting)
+    // keeps the most recently touched project's section on top.
+    var order = [];
+    var groups = {};
     DEVLOG.forEach(function (entry) {
-      var wrap = document.createElement("section");
-      wrap.className = "log-entry";
-
-      var h = document.createElement("h3");
-      h.textContent = entry.date + " | " + entry.title;
-      wrap.appendChild(h);
-
-      var ul = document.createElement("ul");
-      (entry.items || []).forEach(function (t) {
-        var li = document.createElement("li");
-        li.textContent = t;
-        ul.appendChild(li);
-      });
-      wrap.appendChild(ul);
-
-      if (entry.misreads && entry.misreads.length) {
-        var sub = document.createElement("p");
-        sub.className = "log-sub";
-        sub.textContent = "WHERE THE AI MISREAD ME";
-        wrap.appendChild(sub);
-        var ul2 = document.createElement("ul");
-        entry.misreads.forEach(function (t) {
-          var li = document.createElement("li");
-          li.textContent = t;
-          ul2.appendChild(li);
-        });
-        wrap.appendChild(ul2);
-      }
-      body.appendChild(wrap);
+      var key = entry.artifact || "Other";
+      if (!groups[key]) { groups[key] = []; order.push(key); }
+      groups[key].push(entry);
     });
+
+    order.forEach(function (key, idx) {
+      var section = document.createElement("details");
+      section.className = "log-section";
+      if (idx === 0) section.open = true;
+
+      var summary = document.createElement("summary");
+      summary.textContent = key + " (" + groups[key].length +
+        (groups[key].length === 1 ? " entry)" : " entries)");
+      section.appendChild(summary);
+
+      var inner = document.createElement("div");
+      inner.className = "log-section-body";
+      groups[key].forEach(function (entry) {
+        inner.appendChild(renderLogEntry(entry));
+      });
+      section.appendChild(inner);
+
+      body.appendChild(section);
+    });
+
     if (!DEVLOG.length) body.textContent = "No entries yet.";
     showPanel(byId("devlogOverlay"), byId("devlogCard"), opener);
   }

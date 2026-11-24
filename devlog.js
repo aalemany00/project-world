@@ -12,6 +12,7 @@
 window.DEVLOG = [
   {
     date: "2026-11-23",
+    artifact: "TomeAndTile",
     title: "Artifact 5: two real bugs from Henry's first live call test",
     items: [
       "Henry's first real call against LiveKit Cloud (not the fake-room tests the module shipped with) turned up two real bugs on the open device-handling/track-management pull request, both flagged on his PR review. The module treated LiveKit's 'duplicate identity' disconnect (the same person signed in from two browsers, fighting over one connection) the same as any ordinary dropped connection and kept trying to rejoin - which knocked the other tab offline, which rejoined in turn, 34 disconnects in a few minutes until one tab finally closed. Had Claude classify the disconnect reason into a small set of our own (duplicate identity, removed, room closed, anything else) and only auto-rejoin on the last one - the first three now report a clean failure and leave the call ended instead of looping.",
@@ -22,6 +23,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-11-21",
+    artifact: "TomeAndTile",
     title: "Artifact 5: device handling and track management for the video module",
     items: [
       "Built two more Artifact 5 pull requests for web/media/: device handling (issue #65) lists and remembers a chosen microphone or camera, falls back to another device when the selected one disappears, and re-lists a device kind right after its permission is first granted so it can pick up the real device label instead of a blank one.",
@@ -32,6 +34,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-11-19",
+    artifact: "TomeAndTile",
     title: "Artifact 5: a merge conflict, not an Actions outage, was blocking CI",
     items: [
       "Both open pull requests (the asset pipeline and the video module) stopped triggering CI at all after I had Claude push fixes for Henry's review, not just running slowly. Had it check the Actions run history and push an empty commit as a diagnostic, then opened an issue for Henry laying out what looked like an Actions outage.",
@@ -43,15 +46,25 @@ window.DEVLOG = [
   },
   {
     date: "2026-11-17",
-    title: "Artifact 5 portfolio update, plus Henry's review on two pull requests",
+    artifact: "TomeAndTile",
+    title: "Henry's review on two pull requests",
     items: [
-      "Set this card's status to in-progress (yellow pin, not shipped) now that TomeAndTile is clearly a multi-week build, and gave Artifact 6's island its own color instead of reusing Artifact 3's.",
       "Henry reviewed the asset pipeline and video module pull requests from last week. Had Claude fix three lint warnings and an integer-overflow bug in a test for the asset pipeline, and replace a pointless pre-expiry token-renewal timer in the video module with a backoff delay on reconnect instead - catching a bug in that fix itself along the way: resetting the backoff the instant a reconnect succeeds would let a server that drops the call right after accepting it reset to the base delay every single cycle, which defeats the whole point of a backoff."
     ],
     misreads: []
   },
   {
+    date: "2026-11-17",
+    artifact: "Project World (this site)",
+    title: "Status pins, and an island-color fix",
+    items: [
+      "Set the Artifact 5 card's status to in-progress (yellow pin, not shipped) now that TomeAndTile is clearly a multi-week build, and gave Artifact 6's island its own color instead of reusing Artifact 3's."
+    ],
+    misreads: []
+  },
+  {
     date: "2026-11-19",
+    artifact: "Upkeep",
     title: "Upkeep round 18: reviewed, fixed, and merged ChatGPT's animated coach",
     items: [
       "Had ChatGPT build a second pull request against the Upkeep repo on its own - a pixel-art coach that actually walks, exercises, stretches, and talks around the dashboard room, built from real uploaded character art instead of one static image. Had Claude review it properly before merging instead of approving it blind.",
@@ -67,6 +80,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-11-17",
+    artifact: "Upkeep",
     title: "Upkeep round 17: mobile fixes - Sleep card reverted, Food tab's date box replaced",
     items: [
       "Picked Upkeep back up after a gap and found the project had moved roughly 70 commits since I'd last read its own log, plus a stale duplicate clone of the repo (artifact-3/) sitting next to the real one (upkeep/) that could silently eat an edit without anyone noticing if work landed in the wrong folder - flagged it clearly in the project's own notes instead of quietly working around it.",
@@ -77,6 +91,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-11-16",
+    artifact: "Shelf Scanner",
     title: "Shelf Scanner: mobile polish, a new mascot, and a backdrop I built then pulled",
     items: [
       "Fixed two real mobile bugs, found by actually measuring the page instead of trusting a screenshot (a lesson from earlier rounds - screenshot pixels and the real viewport don't always line up): the category tab strip genuinely overflowed with nothing hinting there was more to scroll to (added a fade+arrow that hides itself once you've scrolled to the end), and the masthead subtitle/footer text were wrapping mid-word at narrow widths.",
@@ -91,6 +106,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-11-16",
+    artifact: "OS Quest",
     title: "Extra Artifact card: OS Quest",
     items: [
       "Found out an extra artifact beyond the required five is worth +0.3 toward the final grade, submitted the same way as any other artifact - a portfolio card with a link and a reflection. OS Quest, a TCSS 422 study game I'd been building on the side all quarter (flashcards, quizzes, a scheduler simulator that actually computes FIFO/SJF/STCF/RR/MLFQ schedules, a race-condition visualizer), already qualified, so it got card 6 on this site instead of being built from scratch.",
@@ -102,6 +118,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-11-15",
+    artifact: "TomeAndTile",
     title: "Artifact 5: a second pass on the field map, plus the image pipeline and video module",
     items: [
       "A teammate's contract change merged while my Creature Cauldron field-map pull request was still sitting in review, so the first round of corrections was already stale before anyone looked at it again. Had Claude check GitHub for what had actually landed instead of assuming the document still held, and swap every placeholder row for the real field it was waiting on.",
@@ -112,6 +129,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-11-12",
+    artifact: "TomeAndTile",
     title: "Artifact 5 begins: TomeAndTile, with a team",
     items: [
       "Artifact 5 is TomeAndTile, a virtual tabletop for running D&D sessions with real-time video, dice and a map/token renderer, built with two teammates on one shared repo instead of solo. Henry owns the contracts, server and rules engine; John owns the web client; I own the importers (integrations/) and the video/voice module (web/media/) - split by a shared contracts layer so no one's piece can silently drift out of sync with another's.",
@@ -123,6 +141,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-11-08",
+    artifact: "CouchCrew",
     title: "One cinema look across every theme, plus a room polish pass (John)",
     items: [
       "John and I had talked about the 7 separate themed rooms not actually reading as a theater - since every theme is now the same cinema scene (marquee frame, pleated curtains that draw back once on entry, seats along the bottom), just tinted by that theme's accent color instead of being its own built environment. The theme cards on the Themes page still show their own distinct poster art, so picking a theme still feels like picking something.",
@@ -136,6 +155,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-11-06",
+    artifact: "CouchCrew",
     title: "Real user accounts, a near-miss with Render's ephemeral disk, and a watch-together cleanup",
     items: [
       "Built real user accounts - sign up/in, forgot-password via a security question (no email service is set up for this project), change password, and an account-backed profile - wired so the same name/avatar/bio the app already synced locally now travels with the account, without touching any of the existing room/chat code that reads those fields. Added a password-confirmed delete-account option alongside it.",
@@ -151,6 +171,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-11-05",
+    artifact: "CouchCrew",
     title: "Room settings drawer, floating chat, profile photos, and a reload bug",
     items: [
       "Pulled the room's cluttered header (theme picker, snack bar, and member list all stacked above the content) into one settings drawer, and turned the chat panel into a floating collapsible bubble instead of a tall box sitting under the screen.",
@@ -164,6 +185,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-11-04",
+    artifact: "CouchCrew",
     title: "Replaced Jitsi with our own video calls, added live streams and a real YouTube search",
     items: [
       "Jitsi kept dropping calls early and wouldn't let us rejoin - it's required a signed-in room creator since 2023, and our rooms are fully anonymous - so Henry built our own direct peer-to-peer WebRTC call instead of reaching for another third-party embed, after Daily.co's hidden card requirement and now Jitsi's hidden session cap both turned out to be real catches, not edge cases.",
@@ -178,6 +200,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-11-01",
+    artifact: "CouchCrew",
     title: "Artifact 4: Jitsi doesn't hold up under real use, logging cleanup",
     items: [
       "Had Henry and me actually test a real two-person call on Jitsi (the provider I'd switched the team to after Daily.co's card requirement) and it fell apart fast: booted off under 15 minutes in, rejoining didn't put us back in the same call, and even a clean session is capped around 95 minutes - too short to watch a movie through, which is the whole point. Looked into why instead of just patching around it: meet.jit.si has required an authenticated room creator since 2023, and CouchCrew's rooms are fully anonymous, so they're getting torn down early as an anti-abuse measure with nothing persistent to rejoin. Second time a 'free, no setup' video provider has had a hidden catch that only showed up under real use (Daily.co's card was the first) - deciding to stop trusting a provider's marketing and build our own peer-to-peer video call instead, since it's a small job for just two people and removes the dependency entirely. That's Henry's file, so it's his call to make, not something I built over him.",
@@ -187,6 +210,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-11-01",
+    artifact: "CouchCrew",
     title: "Artifact 4 progress: CouchCrew",
     items: [
       "Teamed up with Henry and John on a watch-party site: rooms you join by code or link, text chat, mic/camera, screen share, and synced YouTube playback, so my long-distance partner and I (and anyone else) can watch something together in one place. Split it three ways - I own rooms/chat/realtime, Henry owns audio/video, John owns the synced player - and PR'd into one shared repo instead of three separate codebases.",
@@ -202,6 +226,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-10-30",
+    artifact: "Upkeep",
     title: "Round 16: real-use gym fixes, a sprite-animation detour, and a Gemini experiment that didn't pan out",
     items: [
       "A week of actually logging workouts surfaced five real bugs/gaps: couldn't swap which weekday does which workout type, hold exercises (planks) were tracked as reps instead of time, the coach kept suggesting more reps instead of more weight, a lot of exercises shared the same rep range for no real reason, and exercise search only worked if I already knew the exact name. Fixed all five - plain-code fixes, no AI involved in any of them.",
@@ -218,6 +243,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-10-25",
+    artifact: "Upkeep",
     title: "Round 15: Upkeep redesign - real mockups + coach sprites",
     items: [
       "Had ChatGPT mock up a full UI redesign for Upkeep (light/dark themes, sidebar nav, progress-ring dashboard cards, a pixel-art coach). Had Claude implement it in three passes - the first version looked nothing like the mockups because it had worked from the written brief instead of the actual screenshots, so the third pass rebuilt everything directly against the images side by side.",
@@ -232,6 +258,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-10-22",
+    artifact: "Upkeep",
     title: "Artifact 3 shipped: Upkeep",
     items: [
       "Built a health tracker (food/calories/protein, gym workouts, water, steps, weight, vitamins) with Firebase Auth + Firestore sync across devices, matching the stack approach from Shelf Scanner.",
@@ -248,6 +275,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-10-19",
+    artifact: "Shelf Scanner",
     title: "Round 14: sort the Books & Manga shelf",
     items: [
       "Added a sort control above the shelf - Custom order (the existing drag order), Alphabetical, Date added, or Author - each flippable to go the other direction with one button. Remembers the choice per device since it's just how I'm looking at the shelf, not something that needs to sync.",
@@ -258,6 +286,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-10-18",
+    artifact: "Shelf Scanner",
     title: "Round 13: bigger covers, breathing room between shelf rows",
     items: [
       "Two quick follow-ups after actually using the new shelf for real (Demon Slayer, Wizard's First Rule): the covers read too small, so scaled them up from 64x100px to 92x142px, same proportions. Separately, when a shelf had enough books to wrap to a second row, the row below sat flush against the plank above it - added a gap between wrapped rows so books don't look like they're touching the shelf above them.",
@@ -266,6 +295,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-10-18",
+    artifact: "Shelf Scanner",
     title: "Round 12: visual bookshelf for Books & Manga",
     items: [
       "First real Layer 2 piece - moved Books & Manga off the grid everything else uses and onto something that actually looks like a shelf. Explored a few directions as design mockups first instead of guessing straight into code: a classic wood shelf with loosely leaning covers, a cartridge-rack take on the Famicom theme, a tight packed ledge, and a hybrid.",
@@ -278,6 +308,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-10-18",
+    artifact: "Shelf Scanner",
     title: "Round 11: duplicate warning + editing an item",
     items: [
       "With 300+ comics it's easy to scan or search the same thing twice without noticing, so added a non-blocking warning - 'You already have this in your collection' - on the confirm screen and live while typing in manual entry. It still lets you add it anyway, since sometimes a second copy is intentional.",
@@ -287,6 +318,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-10-18",
+    artifact: "Shelf Scanner",
     title: "Round 10: fixed the add-item sync bug",
     items: [
       "Tracked down the bug from last round where adding an item right as sync refreshes could make it vanish - turned out to be two separate bugs, not one.",
@@ -297,6 +329,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-10-18",
+    artifact: "Shelf Scanner",
     title: "Round 9: split Books & Manga out of Comics",
     items: [
       "Realized I have a plain book collection too, so manga is moving out of Comics into a new Books & Manga category instead of staying lumped in with western comics.",
@@ -308,6 +341,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-10-18",
+    artifact: "Shelf Scanner",
     title: "Round 8: ISBN search for Comics & Manga",
     items: [
       "Manga and graphic-novel volumes carry a real ISBN-13 barcode on the back cover, separate from the barcode path comics already skip - added a 'Search by ISBN' option next to Enter Manually for that category.",
@@ -317,6 +351,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-10-17",
+    artifact: "Shelf Scanner",
     title: "Round 7: comic shelves, collection search, ordering fixes",
     items: [
       "Comics & Manga now has three shelves - Have It / Want It / Read It - instead of one mixed grid, since scrolling 300+ comics in one list to check whether I already own something doesn't work.",
@@ -327,6 +362,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-10-17",
+    artifact: "Shelf Scanner",
     title: "Round 6: Shelf Scanner restyle + cache fix",
     items: [
       "Replaced the dark/neon look with a retro Japanese Famicom box-art theme (cream background, Famicom-red header with a sunburst, a bold Japanese-gothic display font, thick black borders, game-cartridge-style grid tiles) - landed on it after previewing several other directions as mockups first and getting feedback on each.",
@@ -336,6 +372,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-10-09",
+    artifact: "Project World (this site)",
     title: "Round 4: new character sprite and green background",
     items: [
       "Replaced the guide with the exact sprite image I supplied (cut out of its blue background): big spiky hair, brown glasses, a navy tee, brown shorts, and gray sneakers. He still blinks and looks around; his eyes are redrawn on top of the picture.",
@@ -348,6 +385,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-10-09",
+    artifact: "Project World (this site)",
     title: "Round 3: handheld look, new character, intro",
     items: [
       "Changed the colors to an old handheld console: gray shell, dark screen bezel, maroon buttons, green screen text, and a teal background. No more purple or orange.",
@@ -364,6 +402,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-10-09",
+    artifact: "Project World (this site)",
     title: "Round 2: feedback after deploying",
     items: [
       "Moved the guide character to the bottom-left corner so his speech bubble stops covering the map.",
@@ -379,6 +418,7 @@ window.DEVLOG = [
   },
   {
     date: "2026-10-08",
+    artifact: "Project World (this site)",
     title: "Day 1: interview, plan, and Layer 1",
     items: [
       "Started by having the AI interview me one question at a time: who the site is for (professors now, employers later), what jobs I want (undecided), and what to show (only the five course artifacts for now).",
