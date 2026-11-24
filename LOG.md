@@ -70,6 +70,53 @@ so added one there too, then enriched it with detail from a longer technical bui
 myself. Also logged the extra-labor policy itself into this project's shared `COURSE_GUIDE.md`.
 Added a matching dev-log entry (`devlog.js`).
 
+## 2026-11-17 — Status pins, and an island-color fix
+
+Gave every card a status pin (shipped / in-progress / rumored, color-coded) instead of
+a flat shipped-or-not, and set Artifact 5 to in-progress (yellow) now that TomeAndTile
+is clearly a multi-week build, not something to show as finished. Noticed in the same
+pass that Artifact 6's (OS Quest) map island was reusing Artifact 3's color — gave it
+its own.
+
+## 2026-11-19 — Fixed the order of two Upkeep dev log entries
+
+Two new Upkeep rounds (the animated-coach PR review/merge, and the mobile fixes before
+it) had landed oldest-first in `devlog.js` instead of matching the rest of the log.
+Swapped them back to newest-first.
+
+## 2026-11-22 — Kept the Artifact 5 dev log current
+
+Added the week's TomeAndTile round to `devlog.js`: the CI outage that turned out to be
+an ordinary merge conflict in the shared dev log file, plus the device-handling and
+track-management pull requests for the video module.
+
+## 2026-11-24 — Dev log audit across every artifact
+
+Asked to improve and catch up every artifact's dev log, not just this site's. Went
+through each artifact's own repo (Shelf Scanner, Upkeep, CouchCrew, TomeAndTile) and
+this site's own `LOG.md`/`devlog.js`, comparing each against its actual git history
+instead of trusting what was on disk.
+
+- Found Upkeep's (`artifact-3/`) local clone was just stale — hadn't been fetched since
+  Nov 17, so its `LOG.md` looked like it was missing the animated-coach merge and the
+  autonomous-animation-toggle round. Fetched/fast-forwarded it and confirmed both were
+  already recorded on GitHub; nothing was actually lost, the local copy was just behind.
+- Found a real gap: this site's `devlog.js` hadn't been updated with TomeAndTile's
+  2026-11-23 round (two real bugs — a duplicate-identity reconnect loop and a "waiting
+  for video" state that never showed — both caught by Henry's first live call test
+  against LiveKit Cloud). Added that entry.
+- Reformatted every `devlog.js` entry into the same multi-line, indented object style.
+  Several recent rounds had been appended as a single unbroken line instead of matching
+  the format the earlier entries use, which made the file hard to read and risky to
+  diff/merge (this is also what caused the real merge conflict in the Nov 19 entry
+  above).
+- Caught up this file (`LOG.md`) itself, which hadn't gotten an entry since 2026-11-16
+  despite several portfolio-only changes landing since then (the status-pin feature and
+  the Artifact 6 island-color fix, and a dev-log ordering fix) — added them above.
+- Checked artifact-2, artifact-4, and TomeAndTile's own per-person dev log
+  (`docs/devlog/aalemany00.md`) the same way; all three were already current with their
+  repos' actual commit history, so nothing needed changing there.
+
 ## Open items
 
 - [ ] Rewrite the Artifact 1 reflection in my own words (it is a draft in `cards.js`).
